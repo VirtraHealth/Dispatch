@@ -15,7 +15,7 @@ export function LandingRedirect() {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      router.replace('/dashboard')
+      router.replace('/api/auth/redirect')
     }
   }, [status, router])
 
