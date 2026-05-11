@@ -4,7 +4,24 @@ import { supabaseAdmin } from '@/lib/supabase'
 
 export async function GET(req: NextRequest) {
   const { origin } = new URL(req.url)
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+
+  // Explicitly use secure cookie in production (HTTPS) — required for getToken
+  // to look for __Secure-next-auth.session-token instead of next-auth.session-token
+  const secureCookie = origin.startsWith('https://')
+
+  const cookieNames = req.cookies.getAll().map(c => c.name)
+  console.log('[redirect] origin:', origin)
+  console.log('[redirect] secureCookie:', secureCookie)
+  console.log('[redirect] cookies present:', cookieNames)
+  console.log('[redirect] secret set:', !!process.env.NEXTAUTH_SECRET)
+
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+    secureCookie,
+  })
+
+  console.log('[redirect] token:', token ? `found (${token.email})` : 'null')
 
   if (!token?.email) {
     console.log('[redirect] no token — returning to /')
