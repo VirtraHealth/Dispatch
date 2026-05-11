@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import { LandingCTA } from '@/components/LandingCTA'
+import { LandingRedirect } from '@/components/LandingRedirect'
 
 const SAMPLE_DIGEST = {
   date: 'Sunday, May 10, 2025',
@@ -45,13 +47,20 @@ Questions to sit with this week:
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-cream">
+      {/* Redirect authenticated users straight to dashboard */}
+      <LandingRedirect />
 
       {/* Nav */}
       <nav className="max-w-5xl mx-auto px-6 py-6 flex items-center justify-between">
         <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">
           Dispatch
         </span>
-        <LandingCTA variant="nav" />
+        <div className="flex items-center gap-6">
+          <Link href="/about" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
+            About
+          </Link>
+          <LandingCTA variant="nav" />
+        </div>
       </nav>
 
       {/* Hero */}
@@ -161,8 +170,13 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8">
-        <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <span className="font-sans text-xs font-bold tracking-widest uppercase text-gray-300">Dispatch</span>
+          <div className="flex items-center gap-6">
+            <Link href="/about" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">About</Link>
+            <Link href="/privacy" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">Terms of Service</Link>
+          </div>
           <p className="text-xs text-gray-400 font-sans">Your thinking, amplified.</p>
         </div>
       </footer>
