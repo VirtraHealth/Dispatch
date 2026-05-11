@@ -3,6 +3,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import { supabaseAdmin } from './supabase'
 
 export const authOptions: NextAuthOptions = {
+  debug: true, // temporary — remove after auth is fixed
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
