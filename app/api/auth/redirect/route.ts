@@ -3,13 +3,15 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase'
 
-const base = process.env.NEXTAUTH_URL!
+export async function GET(req: Request) {
+  // Use the actual request origin so redirects work regardless of NEXTAUTH_URL value
+  const { origin } = new URL(req.url)
 
-export async function GET() {
   const session = await getServerSession(authOptions)
 
   if (!session?.user?.email) {
-    return NextResponse.redirect(new URL('/', base))
+    console.log('[redirect] no session — returning to /')
+    return NextResponse.redirect(new URL('/', origin))
   }
 
   const { data: user } = await supabaseAdmin
@@ -19,7 +21,8 @@ export async function GET() {
     .single()
 
   if (!user) {
-    return NextResponse.redirect(new URL('/onboarding', base))
+    console.log('[redirect] no user record — sending to /onboarding')
+    return NextResponse.redirect(new URL('/onboarding', origin))
   }
 
   const { data: settings } = await supabaseAdmin
@@ -28,5 +31,7 @@ export async function GET() {
     .eq('user_id', user.id)
     .single()
 
-  return NextResponse.redirect(new URL(settings ? '/dashboard' : '/onboarding', base))
+  const dest = settings ? '/dashboard' : '/onboarding'
+  console.log(`[redirect] user=${session.user.email} settings=${!!settings} → ${dest}`)
+  return NextResponse.redirect(new URL(dest, origin))
 }
