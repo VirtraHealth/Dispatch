@@ -32,6 +32,7 @@ export interface Digest {
   docs_read: string[]
   doc_count: number
   status: 'sent' | 'failed'
+  feedback?: string | null
 }
 
 export interface DriveFolder {

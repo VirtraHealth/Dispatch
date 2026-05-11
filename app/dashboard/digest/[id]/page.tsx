@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase'
 import { redirect } from 'next/navigation'
 import { parseBodyToHtml } from '@/lib/parse-digest'
+import { DigestFeedback } from '@/components/DigestFeedback'
 import Link from 'next/link'
 
 export default async function DigestDetailPage({ params }: { params: { id: string } }) {
@@ -61,6 +62,8 @@ export default async function DigestDetailPage({ params }: { params: { id: strin
         </div>
 
         <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+
+        <DigestFeedback digestId={digest.id} existingFeedback={digest.feedback} />
 
       </div>
     </div>

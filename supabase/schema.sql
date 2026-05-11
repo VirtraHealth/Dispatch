@@ -36,7 +36,8 @@ create table if not exists digests (
   body_text text,
   docs_read text[] default '{}',
   doc_count int default 0,
-  status text default 'sent'
+  status text default 'sent',
+  feedback text
 );
 
 -- Indexes

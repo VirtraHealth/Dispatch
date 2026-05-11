@@ -51,10 +51,29 @@ export async function POST() {
       return NextResponse.json({ error: 'No readable documents found in selected folders' }, { status: 400 })
     }
 
+    // Collect recent non-"perfect" feedback to inform this generation
+    const { data: feedbackRows } = await supabaseAdmin
+      .from('digests')
+      .select('sent_at, feedback')
+      .eq('user_id', user.id)
+      .not('feedback', 'is', null)
+      .neq('feedback', 'perfect')
+      .order('sent_at', { ascending: false })
+      .limit(3)
+
+    const recentFeedback = (feedbackRows || [])
+      .filter(d => d.feedback)
+      .map(d => {
+        const date = new Date(d.sent_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        return `- ${date}: "${d.feedback}"`
+      })
+      .join('\n')
+
     const { body, subject } = await generateDigest(
       docs,
       settings.personal_instructions || '',
-      settings.onboarding_context || ''
+      settings.onboarding_context || '',
+      recentFeedback,
     )
 
     await sendDigestEmail({

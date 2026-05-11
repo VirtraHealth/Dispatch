@@ -28,7 +28,8 @@ Subject line philosophy:
 export async function generateDigest(
   docs: DriveDoc[],
   personalInstructions: string,
-  onboardingContext: string
+  onboardingContext: string,
+  recentFeedback: string = '',
 ): Promise<DigestResult> {
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
@@ -44,6 +45,7 @@ export async function generateDigest(
   const userContext = [
     onboardingContext ? `Context from the user about what they are working on: ${onboardingContext}` : '',
     personalInstructions ? `Personal instructions: ${personalInstructions}` : '',
+    recentFeedback ? `Recent feedback on previous digests — adjust this digest accordingly:\n${recentFeedback}` : '',
   ]
     .filter(Boolean)
     .join('\n\n')
