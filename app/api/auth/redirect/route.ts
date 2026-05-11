@@ -1,27 +1,26 @@
-import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 import { supabaseAdmin } from '@/lib/supabase'
 
-export async function GET(req: Request) {
-  // Use the actual request origin so redirects work regardless of NEXTAUTH_URL value
+export async function GET(req: NextRequest) {
   const { origin } = new URL(req.url)
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
 
-  const session = await getServerSession(authOptions)
-
-  if (!session?.user?.email) {
-    console.log('[redirect] no session — returning to /')
+  if (!token?.email) {
+    console.log('[redirect] no token — returning to /')
     return NextResponse.redirect(new URL('/', origin))
   }
+
+  const email = token.email as string
 
   const { data: user } = await supabaseAdmin
     .from('users')
     .select('id')
-    .eq('email', session.user.email)
+    .eq('email', email)
     .single()
 
   if (!user) {
-    console.log('[redirect] no user record — sending to /onboarding')
+    console.log('[redirect] no user — sending to /onboarding')
     return NextResponse.redirect(new URL('/onboarding', origin))
   }
 
@@ -32,6 +31,6 @@ export async function GET(req: Request) {
     .single()
 
   const dest = settings ? '/dashboard' : '/onboarding'
-  console.log(`[redirect] user=${session.user.email} settings=${!!settings} → ${dest}`)
+  console.log(`[redirect] ${email} → ${dest}`)
   return NextResponse.redirect(new URL(dest, origin))
 }
