@@ -9,13 +9,21 @@ export const runtime = 'nodejs'
 export const maxDuration = 300
 
 export async function GET(req: NextRequest) {
-  const secret = req.headers.get('x-cron-secret')
-  if (secret !== process.env.CRON_SECRET) {
+  // Accept secret via x-cron-secret header (external cron services)
+  // or Authorization: Bearer header (Vercel built-in cron)
+  const cronSecret = process.env.CRON_SECRET
+  const headerSecret = req.headers.get('x-cron-secret')
+  const authHeader = req.headers.get('authorization')
+  const bearerSecret = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
+
+  if (headerSecret !== cronSecret && bearerSecret !== cronSecret) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const currentUtcHour = new Date().getUTCHours()
   const due = await getUsersDueForDigest(currentUtcHour)
+
+  console.log(`[cron] UTC hour ${currentUtcHour} — ${due.length} user(s) due`)
 
   const results = await Promise.allSettled(
     due.map(async setting => {
@@ -35,14 +43,42 @@ export async function GET(req: NextRequest) {
         )
 
         if (!docs.length) {
-          console.log(`No docs found for ${user.email}`)
+          console.log(`[cron] No docs found for ${user.email}`)
           return
         }
+
+        // Fetch recent feedback to inform generation
+        const { data: feedbackRows } = await supabaseAdmin
+          .from('digests')
+          .select('sent_at, feedback')
+          .eq('user_id', setting.user_id)
+          .not('feedback', 'is', null)
+          .neq('feedback', 'perfect')
+          .order('sent_at', { ascending: false })
+          .limit(3)
+
+        const recentFeedback = (feedbackRows || [])
+          .filter(d => d.feedback)
+          .map(d => {
+            const date = new Date(d.sent_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+            return `- ${date}: "${d.feedback}"`
+          })
+          .join('\n')
+
+        // Detect first digest
+        const { count: digestCount } = await supabaseAdmin
+          .from('digests')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', setting.user_id)
+
+        const isFirstDigest = (digestCount ?? 0) === 0
 
         const { body, subject } = await generateDigest(
           docs,
           setting.personal_instructions || '',
-          setting.onboarding_context || ''
+          setting.onboarding_context || '',
+          recentFeedback,
+          isFirstDigest,
         )
 
         await sendDigestEmail({
@@ -64,9 +100,9 @@ export async function GET(req: NextRequest) {
           status: 'sent',
         })
 
-        console.log(`Digest sent to ${user.email}`)
+        console.log(`[cron] Digest sent to ${user.email}`)
       } catch (e) {
-        console.error(`Digest failed for ${user.email}:`, e)
+        console.error(`[cron] Digest failed for ${user.email}:`, e)
 
         await supabaseAdmin.from('digests').insert({
           user_id: setting.user_id,
