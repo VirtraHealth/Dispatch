@@ -51,6 +51,14 @@ export async function POST() {
       return NextResponse.json({ error: 'No readable documents found in selected folders' }, { status: 400 })
     }
 
+    // Check if this is the user's first digest
+    const { count: digestCount } = await supabaseAdmin
+      .from('digests')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+
+    const isFirstDigest = (digestCount ?? 0) === 0
+
     // Collect recent non-"perfect" feedback to inform this generation
     const { data: feedbackRows } = await supabaseAdmin
       .from('digests')
@@ -74,6 +82,7 @@ export async function POST() {
       settings.personal_instructions || '',
       settings.onboarding_context || '',
       recentFeedback,
+      isFirstDigest,
     )
 
     await sendDigestEmail({

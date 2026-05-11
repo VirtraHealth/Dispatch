@@ -201,23 +201,26 @@ export default function OnboardingPage() {
         {/* Step 2: Context + personal instructions */}
         {step === 2 && (
           <div>
-            <h1 className="font-serif text-3xl text-ink mb-3">Tell Claude about yourself</h1>
-            <p className="text-gray-500 text-base mb-6 font-sans leading-relaxed">
-              This context helps Claude write more relevant, personal digests from day one.
+            <h1 className="font-serif text-3xl text-ink mb-3">Make it yours</h1>
+            <p className="text-gray-500 text-base mb-2 font-sans leading-relaxed">
+              This is what separates a generic digest from one that feels written for you. The more you share, the more useful every digest becomes.
             </p>
 
             <div className="space-y-5">
               <div>
                 <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
-                  What are you thinking about lately?
+                  What are you working on right now?
                 </label>
                 <textarea
                   value={onboardingContext}
                   onChange={e => setOnboardingContext(e.target.value)}
-                  rows={4}
-                  placeholder="What projects, questions, or ideas are you currently wrestling with? What are you trying to figure out? This is just for Claude — write freely."
+                  rows={6}
+                  placeholder={"e.g. I'm building a B2B SaaS and constantly second-guessing whether to go broad or stay niche. I keep coming back to the question of whether great product can overcome poor distribution — or whether distribution is the actual product. I also journal a lot about Stoicism and how to think about uncertainty as a founder. I'm reading a lot of Marcus Aurelius and Nassim Taleb lately and trying to connect those ideas to what I'm building."}
                   className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
                 />
+                <p className="text-xs text-gray-400 font-sans mt-2">
+                  Write freely — Claude uses this to understand what you care about most, so your first digest feels personal, not generic.
+                </p>
               </div>
 
               <div>
@@ -228,7 +231,7 @@ export default function OnboardingPage() {
                   value={personalInstructions}
                   onChange={e => setPersonalInstructions(e.target.value)}
                   rows={3}
-                  placeholder="e.g. Focus more on business implications. Push back on my assumptions. Go deeper on philosophy than business."
+                  placeholder={"e.g. Keep it shorter — 3 sharp insights rather than 4 long sections. Push back harder when I'm being vague. Lean more into philosophy than business. End with one big question, not five."}
                   className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
                 />
               </div>
@@ -245,7 +248,7 @@ export default function OnboardingPage() {
             </button>
 
             <p className="text-xs text-gray-400 text-center mt-3 font-sans">
-              Your first digest will be sent immediately after you finish.
+              Your first digest will be sent immediately — check your inbox.
             </p>
           </div>
         )}
