@@ -33,10 +33,8 @@ const HOURS = Array.from({ length: 24 }, (_, i) => {
 export default function OnboardingPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  // Initialize to 0; update to 1 once session is confirmed — avoids the
-  // race where useState runs before NextAuth resolves status from 'loading'.
+  // Start at step 0; the effect below advances to step 1 once authenticated.
   const [step, setStep] = useState(0)
-  const [stepInitialized, setStepInitialized] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -53,19 +51,17 @@ export default function OnboardingPage() {
   const [onboardingContext, setOnboardingContext] = useState('')
   const [personalInstructions, setPersonalInstructions] = useState('')
 
-  // Advance to step 1 once NextAuth finishes loading and confirms the user
-  // is authenticated. Also pre-fill deliveryEmail from the session.
+  // Advance to step 1 whenever the session becomes authenticated (handles
+  // both: arriving already signed-in, and returning from the OAuth popup).
+  // No stepInitialized guard — we want this to fire every time status changes
+  // to 'authenticated' so it works after the OAuth redirect too.
   useEffect(() => {
-    if (status === 'loading' || stepInitialized) return
-    setStepInitialized(true)
-    if (status === 'authenticated') {
-      setStep(1)
-      if (session?.user?.email && !deliveryEmail) {
-        setDeliveryEmail(session.user.email)
-      }
+    if (status !== 'authenticated') return
+    setStep(prev => (prev === 0 ? 1 : prev))
+    if (session?.user?.email) {
+      setDeliveryEmail(prev => prev || session.user!.email!)
     }
-    // If 'unauthenticated', stay on step 0 (the sign-in screen).
-  }, [status, session, stepInitialized, deliveryEmail])
+  }, [status, session])
 
   async function handleGoogleSignIn() {
     await signIn('google', { callbackUrl: '/onboarding' })
