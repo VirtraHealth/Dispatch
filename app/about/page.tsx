@@ -123,13 +123,12 @@ export default function AboutPage() {
               Contact
             </div>
             <p>
-              Dispatch is built by Virtra Health. For questions, feedback, or support, email us
-              at{' '}
+              For questions, feedback, or support, email us at{' '}
               <a
-                href="mailto:info@teetalkapp.com"
+                href="mailto:dispatch@mydailyjournal.net"
                 className="text-indigo-600 underline underline-offset-2"
               >
-                info@teetalkapp.com
+                dispatch@mydailyjournal.net
               </a>
               .
             </p>
