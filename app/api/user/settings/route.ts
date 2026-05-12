@@ -72,5 +72,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to save settings' }, { status: 500 })
   }
 
+  // Start 7-day trial for users who don't have a subscription yet
+  const { data: userRecord } = await supabaseAdmin
+    .from('users')
+    .select('subscription_status, trial_started_at')
+    .eq('id', user.id)
+    .single()
+
+  if (!userRecord?.subscription_status && !userRecord?.trial_started_at) {
+    await supabaseAdmin
+      .from('users')
+      .update({
+        subscription_status: 'trialing',
+        trial_started_at: new Date().toISOString(),
+      })
+      .eq('id', user.id)
+  }
+
   return NextResponse.json({ settings: data })
 }

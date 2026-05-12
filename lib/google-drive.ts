@@ -19,12 +19,18 @@ export async function listFolders(
 ): Promise<DriveFolder[]> {
   const drive = await getDriveClient(accessToken, refreshToken)
   const res = await drive.files.list({
-    q: "mimeType='application/vnd.google-apps.folder' and 'me' in owners and trashed=false",
-    fields: 'files(id, name)',
+    q: "mimeType='application/vnd.google-apps.folder' and trashed=false",
+    fields: 'files(id, name, parents)',
     orderBy: 'name',
-    pageSize: 200,
+    pageSize: 500,
+    includeItemsFromAllDrives: true,
+    supportsAllDrives: true,
   })
-  return (res.data.files || []).map(f => ({ id: f.id!, name: f.name! }))
+  return (res.data.files || []).map(f => ({
+    id: f.id!,
+    name: f.name!,
+    parentId: f.parents?.[0] ?? null,
+  }))
 }
 
 export async function foldersHaveContent(

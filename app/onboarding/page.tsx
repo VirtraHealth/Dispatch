@@ -154,8 +154,8 @@ export default function OnboardingPage() {
         {step === 2 && (
           <div>
             <h1 className="font-serif text-3xl text-ink mb-3">Make it yours</h1>
-            <p className="text-gray-500 text-base mb-2 font-sans leading-relaxed">
-              This is what separates a generic digest from one that feels written for you. The more you share, the more useful every digest becomes.
+            <p className="text-gray-500 text-sm mb-6 font-sans">
+              Help Claude understand you so your digest feels personal from day one.
             </p>
 
             <div className="space-y-5">
@@ -169,8 +169,8 @@ export default function OnboardingPage() {
                 <textarea
                   value={onboardingContext}
                   onChange={e => setOnboardingContext(e.target.value)}
-                  rows={6}
-                  placeholder={"e.g. I'm building a B2B SaaS and constantly second-guessing whether to go broad or stay niche. I keep coming back to the question of whether great product can overcome poor distribution — or whether distribution is the actual product. I also journal a lot about Stoicism and how to think about uncertainty as a founder. I'm reading a lot of Marcus Aurelius and Nassim Taleb lately and trying to connect those ideas to what I'm building."}
+                  rows={4}
+                  placeholder="e.g. I'm building a B2B SaaS, wrestling with distribution vs. product. I journal about Stoicism and founder uncertainty."
                   className={`w-full border rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none resize-none ${
                     foldersHaveContent === false && onboardingContext.length > 0 && onboardingContext.length < 100
                       ? 'border-amber-300 focus:border-amber-400'
@@ -193,13 +193,13 @@ export default function OnboardingPage() {
 
               <div>
                 <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
-                  Any instructions for Claude? <span className="text-gray-300 normal-case font-normal tracking-normal">(optional)</span>
+                  Instructions <span className="text-gray-300 normal-case font-normal tracking-normal">(optional)</span>
                 </label>
                 <textarea
                   value={personalInstructions}
                   onChange={e => setPersonalInstructions(e.target.value)}
                   rows={3}
-                  placeholder={"e.g. Keep it shorter — 3 sharp insights rather than 4 long sections. Push back harder when I'm being vague. Lean more into philosophy than business. End with one big question, not five."}
+                  placeholder="e.g. Keep it to 3 sharp insights. Push back harder. Lean into philosophy."
                   className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
                 />
               </div>

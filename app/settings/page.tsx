@@ -7,26 +7,6 @@ import { FolderPicker } from '@/components/FolderPicker'
 import { FrequencyPicker } from '@/components/FrequencyPicker'
 import type { DriveFolder, UserSettings } from '@/types'
 
-const TIMEZONES = [
-  'America/New_York',
-  'America/Chicago',
-  'America/Denver',
-  'America/Los_Angeles',
-  'America/Anchorage',
-  'Pacific/Honolulu',
-  'Europe/London',
-  'Europe/Paris',
-  'Europe/Berlin',
-  'Asia/Tokyo',
-  'Asia/Singapore',
-  'Australia/Sydney',
-]
-
-const HOURS = Array.from({ length: 24 }, (_, i) => {
-  const h = i % 12 || 12
-  const ampm = i < 12 ? 'AM' : 'PM'
-  return { value: i, label: `${h}:00 ${ampm}` }
-})
 
 export default function SettingsPage() {
   const { data: session } = useSession()
@@ -40,9 +20,8 @@ export default function SettingsPage() {
   const [selectedFolders, setSelectedFolders] = useState<DriveFolder[]>([])
   const [deliveryEmail, setDeliveryEmail] = useState('')
   const [frequency, setFrequency] = useState<'daily' | 'weekly' | 'biweekly' | 'monthly'>('daily')
-  const [deliveryHour, setDeliveryHour] = useState(7)
-  const [timezone, setTimezone] = useState('America/Los_Angeles')
   const [personalInstructions, setPersonalInstructions] = useState('')
+  const [onboardingContext, setOnboardingContext] = useState('')
   const [isActive, setIsActive] = useState(true)
 
   useEffect(() => {
@@ -60,9 +39,8 @@ export default function SettingsPage() {
           )
           setDeliveryEmail(s.delivery_email || session?.user?.email || '')
           setFrequency(s.frequency || 'daily')
-          setDeliveryHour(s.delivery_hour ?? 7)
-          setTimezone(s.timezone || 'America/Los_Angeles')
           setPersonalInstructions(s.personal_instructions || '')
+          setOnboardingContext(s.onboarding_context || '')
           setIsActive(s.is_active ?? true)
         }
       })
@@ -82,10 +60,10 @@ export default function SettingsPage() {
           folder_names: selectedFolders.map(f => f.name),
           delivery_email: deliveryEmail,
           frequency,
-          delivery_hour: deliveryHour,
-          timezone,
+          delivery_hour: 7,
+          timezone: 'America/Los_Angeles',
           personal_instructions: personalInstructions || null,
-          onboarding_context: settings?.onboarding_context ?? null,
+          onboarding_context: onboardingContext || null,
           is_active: isActive,
         }),
       })
@@ -175,36 +153,13 @@ export default function SettingsPage() {
             <FrequencyPicker value={frequency} onChange={setFrequency} />
           </div>
 
-          {/* Time */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* Delivery time (fixed) */}
+          <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100">
             <div>
-              <label className="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-2 font-sans">
-                Delivery time
-              </label>
-              <select
-                value={deliveryHour}
-                onChange={e => setDeliveryHour(Number(e.target.value))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm font-sans focus:outline-none focus:border-indigo-400 bg-white"
-              >
-                {HOURS.map(h => (
-                  <option key={h.value} value={h.value}>{h.label}</option>
-                ))}
-              </select>
+              <div className="text-sm font-semibold text-gray-700 font-sans">Delivery time</div>
+              <div className="text-xs text-gray-400 font-sans mt-0.5">Every morning at 7:00 AM Pacific</div>
             </div>
-            <div>
-              <label className="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-2 font-sans">
-                Timezone
-              </label>
-              <select
-                value={timezone}
-                onChange={e => setTimezone(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm font-sans focus:outline-none focus:border-indigo-400 bg-white"
-              >
-                {TIMEZONES.map(tz => (
-                  <option key={tz} value={tz}>{tz.replace('_', ' ')}</option>
-                ))}
-              </select>
-            </div>
+            <span className="text-xs text-gray-300 font-sans">Fixed</span>
           </div>
 
           {/* Personal instructions */}
@@ -219,6 +174,23 @@ export default function SettingsPage() {
               placeholder="e.g. Focus more on business implications. Push back harder on my assumptions. Go deeper on philosophy."
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
             />
+          </div>
+
+          {/* Context */}
+          <div>
+            <label className="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-2 font-sans">
+              Your context
+            </label>
+            <textarea
+              value={onboardingContext}
+              onChange={e => setOnboardingContext(e.target.value)}
+              rows={4}
+              placeholder="What are you working on? What questions keep coming up? What do you want Claude to understand about you?"
+              className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
+            />
+            <p className="text-xs text-gray-400 font-sans mt-1">
+              Claude reads this every morning to personalize your digest.
+            </p>
           </div>
 
           {/* Save */}
