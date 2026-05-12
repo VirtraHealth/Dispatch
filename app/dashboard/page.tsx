@@ -160,7 +160,7 @@ export default function DashboardPage() {
               disabled={subscribing}
               className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 font-sans disabled:opacity-50"
             >
-              {subscribing ? 'Loading…' : 'Subscribe — $2.99/mo'}
+              {subscribing ? 'Loading…' : 'Subscribe — $4.99/mo'}
             </button>
           </div>
         )}
@@ -177,7 +177,7 @@ export default function DashboardPage() {
               disabled={subscribing}
               className="bg-indigo-600 text-white px-8 py-3.5 rounded-xl text-sm font-semibold font-sans hover:bg-indigo-700 disabled:opacity-50 transition-colors"
             >
-              {subscribing ? 'Loading…' : 'Resume my digest — $2.99/mo'}
+              {subscribing ? 'Loading…' : 'Resume my digest — $4.99/mo'}
             </button>
             <p className="text-xs text-gray-400 font-sans mt-3">Cancel anytime.</p>
           </div>
