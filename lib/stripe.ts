@@ -8,7 +8,7 @@ export function isSubscriptionActive(
   status: string | null,
   trialStartedAt: string | null
 ): boolean {
-  if (status === 'active') return true
+  if (status === 'active' || status === 'complimentary') return true
   if (status === 'trialing' && trialStartedAt) {
     const trialEnd = new Date(trialStartedAt).getTime() + 7 * 24 * 60 * 60 * 1000
     return Date.now() < trialEnd
