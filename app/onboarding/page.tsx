@@ -23,6 +23,8 @@ export default function OnboardingPage() {
   const [deliveryEmail, setDeliveryEmail] = useState('')
   const [onboardingContext, setOnboardingContext] = useState('')
   const [personalInstructions, setPersonalInstructions] = useState('')
+  const [foldersHaveContent, setFoldersHaveContent] = useState<boolean | null>(null)
+  const [checkingContent, setCheckingContent] = useState(false)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -32,6 +34,24 @@ export default function OnboardingPage() {
       setDeliveryEmail(prev => prev || session.user!.email!)
     }
   }, [status, session, router])
+
+  async function advanceFromFolders() {
+    setCheckingContent(true)
+    try {
+      const res = await fetch('/api/drive/check-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ folderIds: selectedFolders.map(f => f.id) }),
+      })
+      const data = await res.json()
+      setFoldersHaveContent(data.hasContent ?? true)
+    } catch {
+      setFoldersHaveContent(true)
+    } finally {
+      setCheckingContent(false)
+    }
+    setStep(1)
+  }
 
   async function handleFinish() {
     setLoading(true)
@@ -91,11 +111,11 @@ export default function OnboardingPage() {
             </p>
             <FolderPicker selected={selectedFolders} onChange={setSelectedFolders} max={3} />
             <button
-              onClick={() => setStep(1)}
-              disabled={selectedFolders.length === 0}
+              onClick={advanceFromFolders}
+              disabled={selectedFolders.length === 0 || checkingContent}
               className="mt-6 w-full bg-ink text-white rounded-xl py-3.5 text-sm font-semibold font-sans hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              Continue
+              {checkingContent ? 'Checking folders…' : 'Continue'}
             </button>
           </div>
         )}
@@ -142,17 +162,33 @@ export default function OnboardingPage() {
               <div>
                 <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
                   What are you working on right now?
+                  {foldersHaveContent === false && (
+                    <span className="ml-2 text-amber-500 normal-case font-normal tracking-normal">required — your folders appear empty</span>
+                  )}
                 </label>
                 <textarea
                   value={onboardingContext}
                   onChange={e => setOnboardingContext(e.target.value)}
                   rows={6}
                   placeholder={"e.g. I'm building a B2B SaaS and constantly second-guessing whether to go broad or stay niche. I keep coming back to the question of whether great product can overcome poor distribution — or whether distribution is the actual product. I also journal a lot about Stoicism and how to think about uncertainty as a founder. I'm reading a lot of Marcus Aurelius and Nassim Taleb lately and trying to connect those ideas to what I'm building."}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
+                  className={`w-full border rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none resize-none ${
+                    foldersHaveContent === false && onboardingContext.length > 0 && onboardingContext.length < 100
+                      ? 'border-amber-300 focus:border-amber-400'
+                      : 'border-gray-200 focus:border-indigo-400'
+                  }`}
                 />
-                <p className="text-xs text-gray-400 font-sans mt-2">
-                  Write freely — Claude uses this to understand what you care about most, so your first digest feels personal, not generic.
-                </p>
+                <div className="flex items-center justify-between mt-2">
+                  <p className="text-xs text-gray-400 font-sans">
+                    {foldersHaveContent === false
+                      ? 'Your folders are empty — tell Claude what you\'re thinking about so your first digest feels personal.'
+                      : 'Write freely — Claude uses this to understand what you care about most.'}
+                  </p>
+                  {foldersHaveContent === false && (
+                    <p className={`text-xs font-sans ml-4 flex-shrink-0 ${onboardingContext.length >= 100 ? 'text-green-500' : 'text-amber-500'}`}>
+                      {onboardingContext.length}/100
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div>
@@ -173,8 +209,8 @@ export default function OnboardingPage() {
 
             <button
               onClick={handleFinish}
-              disabled={loading}
-              className="mt-6 w-full bg-indigo-600 text-white rounded-xl py-3.5 text-sm font-semibold font-sans hover:bg-indigo-700 disabled:opacity-60 transition-colors"
+              disabled={loading || (foldersHaveContent === false && onboardingContext.length < 100)}
+              className="mt-6 w-full bg-indigo-600 text-white rounded-xl py-3.5 text-sm font-semibold font-sans hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? 'Setting up your digest…' : 'Start my first digest'}
             </button>

@@ -27,6 +27,39 @@ export async function listFolders(
   return (res.data.files || []).map(f => ({ id: f.id!, name: f.name! }))
 }
 
+export async function createFolder(
+  accessToken: string,
+  refreshToken: string,
+  name: string
+): Promise<DriveFolder> {
+  const drive = await getDriveClient(accessToken, refreshToken)
+  const res = await drive.files.create({
+    requestBody: {
+      name,
+      mimeType: 'application/vnd.google-apps.folder',
+    },
+    fields: 'id, name',
+  })
+  return { id: res.data.id!, name: res.data.name! }
+}
+
+export async function foldersHaveContent(
+  accessToken: string,
+  refreshToken: string,
+  folderIds: string[]
+): Promise<boolean> {
+  const drive = await getDriveClient(accessToken, refreshToken)
+  for (const folderId of folderIds) {
+    const res = await drive.files.list({
+      q: `'${folderId}' in parents and (mimeType='application/vnd.google-apps.document' or mimeType='text/plain') and trashed=false`,
+      fields: 'files(id)',
+      pageSize: 1,
+    })
+    if ((res.data.files || []).length > 0) return true
+  }
+  return false
+}
+
 export async function readDocsFromFolders(
   accessToken: string,
   refreshToken: string,
