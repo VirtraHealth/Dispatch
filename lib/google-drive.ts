@@ -27,22 +27,6 @@ export async function listFolders(
   return (res.data.files || []).map(f => ({ id: f.id!, name: f.name! }))
 }
 
-export async function createFolder(
-  accessToken: string,
-  refreshToken: string,
-  name: string
-): Promise<DriveFolder> {
-  const drive = await getDriveClient(accessToken, refreshToken)
-  const res = await drive.files.create({
-    requestBody: {
-      name,
-      mimeType: 'application/vnd.google-apps.folder',
-    },
-    fields: 'id, name',
-  })
-  return { id: res.data.id!, name: res.data.name! }
-}
-
 export async function foldersHaveContent(
   accessToken: string,
   refreshToken: string,

@@ -14,10 +14,7 @@ export function FolderPicker({ selected, onChange, max = 3 }: FolderPickerProps)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
-  const [creating, setCreating] = useState(false)
-  const [newFolderName, setNewFolderName] = useState('')
-  const [createLoading, setCreateLoading] = useState(false)
-  const [createError, setCreateError] = useState('')
+  const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
     fetch('/api/drive/folders')
@@ -39,26 +36,13 @@ export function FolderPicker({ selected, onChange, max = 3 }: FolderPickerProps)
     }
   }
 
-  async function handleCreate() {
-    if (!newFolderName.trim()) return
-    setCreateLoading(true)
-    setCreateError('')
+  async function refresh() {
+    setRefreshing(true)
     try {
-      const res = await fetch('/api/drive/folders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: newFolderName.trim() }),
-      })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Failed to create folder')
-      setFolders(prev => [data.folder, ...prev])
-      onChange([...selected, data.folder].slice(0, max))
-      setNewFolderName('')
-      setCreating(false)
-    } catch (e) {
-      setCreateError(e instanceof Error ? e.message : 'Failed to create folder')
+      const data = await fetch('/api/drive/folders').then(r => r.json())
+      if (data.folders) setFolders(data.folders)
     } finally {
-      setCreateLoading(false)
+      setRefreshing(false)
     }
   }
 
@@ -82,19 +66,27 @@ export function FolderPicker({ selected, onChange, max = 3 }: FolderPickerProps)
 
   return (
     <div>
-      {folders.length === 0 && !creating ? (
+      {folders.length === 0 ? (
         <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center">
           <p className="text-sm text-gray-500 font-sans mb-1">No folders found in your Google Drive.</p>
-          <p className="text-xs text-gray-400 font-sans mb-4">Create one to get started.</p>
-          <button
-            onClick={() => setCreating(true)}
-            className="inline-flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold font-sans px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Create a folder
-          </button>
+          <p className="text-xs text-gray-400 font-sans mb-4">Create one in Drive, then come back and refresh.</p>
+          <div className="flex items-center justify-center gap-3">
+            <a
+              href="https://drive.google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold font-sans px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Open Google Drive ↗
+            </a>
+            <button
+              onClick={refresh}
+              disabled={refreshing}
+              className="text-sm text-gray-500 hover:text-gray-700 font-sans disabled:opacity-50"
+            >
+              {refreshing ? 'Refreshing…' : 'Refresh'}
+            </button>
+          </div>
         </div>
       ) : (
         <>
@@ -163,55 +155,29 @@ export function FolderPicker({ selected, onChange, max = 3 }: FolderPickerProps)
             )}
           </div>
 
-          <p className="text-xs text-gray-400 pt-2 font-sans">
-            {selected.length}/{max} selected · {folders.length} folder{folders.length !== 1 ? 's' : ''} in Drive
-          </p>
-        </>
-      )}
-
-      {/* Create folder inline form */}
-      {creating && (
-        <div className="mt-3 p-4 border border-indigo-100 bg-indigo-50 rounded-xl">
-          <p className="text-xs font-bold tracking-wider uppercase text-indigo-600 font-sans mb-2">New folder</p>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={newFolderName}
-              onChange={e => setNewFolderName(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleCreate()}
-              placeholder="Folder name"
-              autoFocus
-              className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm font-sans focus:outline-none focus:border-indigo-400 bg-white"
-            />
-            <button
-              onClick={handleCreate}
-              disabled={createLoading || !newFolderName.trim()}
-              className="bg-indigo-600 text-white text-sm font-semibold font-sans px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
-            >
-              {createLoading ? '…' : 'Create'}
-            </button>
-            <button
-              onClick={() => { setCreating(false); setNewFolderName(''); setCreateError('') }}
-              className="text-sm text-gray-400 hover:text-gray-600 font-sans px-2"
-            >
-              Cancel
-            </button>
+          <div className="flex items-center justify-between pt-2">
+            <p className="text-xs text-gray-400 font-sans">
+              {selected.length}/{max} selected · {folders.length} folder{folders.length !== 1 ? 's' : ''} in Drive
+            </p>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://drive.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-indigo-500 hover:text-indigo-700 font-sans"
+              >
+                Open Drive ↗
+              </a>
+              <button
+                onClick={refresh}
+                disabled={refreshing}
+                className="text-xs text-gray-400 hover:text-gray-600 font-sans disabled:opacity-50"
+              >
+                {refreshing ? 'Refreshing…' : 'Refresh'}
+              </button>
+            </div>
           </div>
-          {createError && <p className="text-xs text-red-500 mt-2 font-sans">{createError}</p>}
-        </div>
-      )}
-
-      {/* New folder button when folders already exist */}
-      {folders.length > 0 && !creating && (
-        <button
-          onClick={() => setCreating(true)}
-          className="mt-2 text-xs text-indigo-600 hover:text-indigo-700 font-sans flex items-center gap-1"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          New folder
-        </button>
+        </>
       )}
     </div>
   )
