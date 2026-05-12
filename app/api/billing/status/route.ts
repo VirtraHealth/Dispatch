@@ -22,5 +22,7 @@ export async function GET() {
   const trialing = user.subscription_status === 'trialing'
   const daysLeft = trialDaysRemaining(user.trial_started_at)
 
-  return NextResponse.json({ active, trialing, daysLeft })
+  const isAdmin = session.user.email === process.env.ADMIN_EMAIL
+
+  return NextResponse.json({ active, trialing, daysLeft, isAdmin })
 }

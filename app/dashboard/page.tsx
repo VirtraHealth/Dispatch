@@ -15,7 +15,8 @@ const [settings, setSettings] = useState<UserSettings | null>(null)
   const [instantThisWeek, setInstantThisWeek] = useState(0)
   const [sending, setSending] = useState(false)
   const [sendStatus, setSendStatus] = useState<'idle' | 'success' | 'error' | 'limit'>('idle')
-  const [accessStatus, setAccessStatus] = useState<{ active: boolean; trialing: boolean; daysLeft: number } | null>(null)
+  const [accessStatus, setAccessStatus] = useState<{ active: boolean; trialing: boolean; daysLeft: number; isAdmin: boolean } | null>(null)
+  const isAdmin = accessStatus?.isAdmin ?? false
   const [subscribing, setSubscribing] = useState(false)
 
   // Instructions inline editing
@@ -128,7 +129,7 @@ const [settings, setSettings] = useState<UserSettings | null>(null)
         <div className="flex items-center justify-between mb-3">
           <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">Dispatch</span>
           <div className="flex items-center gap-4">
-            {session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
+            {isAdmin && (
               <button
                 onClick={() => router.push('/admin')}
                 className="text-sm text-gray-400 hover:text-gray-600 font-sans transition-colors"
