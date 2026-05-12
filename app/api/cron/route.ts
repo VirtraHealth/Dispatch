@@ -20,10 +20,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const currentUtcHour = new Date().getUTCHours()
-  const due = await getUsersDueForDigest(currentUtcHour)
+  const due = await getUsersDueForDigest()
 
-  console.log(`[cron] UTC hour ${currentUtcHour} — ${due.length} user(s) due`)
+  console.log(`[cron] ${due.length} user(s) due`)
 
   const results = await Promise.allSettled(
     due.map(async setting => {

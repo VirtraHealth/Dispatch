@@ -5,30 +5,9 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { StepNav } from '@/components/StepNav'
 import { FolderPicker } from '@/components/FolderPicker'
-import { FrequencyPicker } from '@/components/FrequencyPicker'
 import type { DriveFolder } from '@/types'
 
 const STEP_LABELS = ['Choose folders', 'Delivery', 'Your context']
-const TIMEZONES = [
-  'America/New_York',
-  'America/Chicago',
-  'America/Denver',
-  'America/Los_Angeles',
-  'America/Anchorage',
-  'Pacific/Honolulu',
-  'Europe/London',
-  'Europe/Paris',
-  'Europe/Berlin',
-  'Asia/Tokyo',
-  'Asia/Singapore',
-  'Australia/Sydney',
-]
-
-const HOURS = Array.from({ length: 24 }, (_, i) => {
-  const h = i % 12 || 12
-  const ampm = i < 12 ? 'AM' : 'PM'
-  return { value: i, label: `${h}:00 ${ampm}` }
-})
 
 export default function OnboardingPage() {
   const { data: session, status } = useSession()
@@ -42,9 +21,6 @@ export default function OnboardingPage() {
 
   const [selectedFolders, setSelectedFolders] = useState<DriveFolder[]>([])
   const [deliveryEmail, setDeliveryEmail] = useState('')
-  const [frequency, setFrequency] = useState<'daily' | 'weekly' | 'biweekly' | 'monthly'>('daily')
-  const [deliveryHour, setDeliveryHour] = useState(7)
-  const [timezone, setTimezone] = useState('America/Los_Angeles')
   const [onboardingContext, setOnboardingContext] = useState('')
   const [personalInstructions, setPersonalInstructions] = useState('')
 
@@ -69,9 +45,6 @@ export default function OnboardingPage() {
           folder_ids: selectedFolders.map(f => f.id),
           folder_names: selectedFolders.map(f => f.name),
           delivery_email: deliveryEmail || session?.user?.email,
-          frequency,
-          delivery_hour: deliveryHour,
-          timezone,
           personal_instructions: personalInstructions || null,
           onboarding_context: onboardingContext || null,
         }),
@@ -127,66 +100,25 @@ export default function OnboardingPage() {
           </div>
         )}
 
-        {/* Step 1: Delivery settings */}
+        {/* Step 1: Delivery email */}
         {step === 1 && (
           <div>
-            <h1 className="font-serif text-3xl text-ink mb-3">When should it arrive?</h1>
+            <h1 className="font-serif text-3xl text-ink mb-3">Where should it land?</h1>
             <p className="text-gray-500 text-base mb-6 font-sans leading-relaxed">
-              Your digest will land in your inbox at the time you choose.
+              Your digest arrives every morning at 7 AM. Confirm where to send it.
             </p>
 
-            <div className="space-y-5">
-              <div>
-                <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
-                  Delivery email
-                </label>
-                <input
-                  type="email"
-                  value={deliveryEmail}
-                  onChange={e => setDeliveryEmail(e.target.value)}
-                  placeholder={session?.user?.email || 'you@email.com'}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans focus:outline-none focus:border-indigo-400"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
-                  Frequency
-                </label>
-                <FrequencyPicker value={frequency} onChange={setFrequency} />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
-                    Delivery time
-                  </label>
-                  <select
-                    value={deliveryHour}
-                    onChange={e => setDeliveryHour(Number(e.target.value))}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm font-sans focus:outline-none focus:border-indigo-400 bg-white"
-                  >
-                    {HOURS.map(h => (
-                      <option key={h.value} value={h.value}>{h.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
-                    Timezone
-                  </label>
-                  <select
-                    value={timezone}
-                    onChange={e => setTimezone(e.target.value)}
-                    className="w-full border border-gray-200 rounded-lg px-3 py-3 text-sm font-sans focus:outline-none focus:border-indigo-400 bg-white"
-                  >
-                    {TIMEZONES.map(tz => (
-                      <option key={tz} value={tz}>{tz.replace('_', ' ')}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+            <div>
+              <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
+                Delivery email
+              </label>
+              <input
+                type="email"
+                value={deliveryEmail}
+                onChange={e => setDeliveryEmail(e.target.value)}
+                placeholder={session?.user?.email || 'you@email.com'}
+                className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans focus:outline-none focus:border-indigo-400"
+              />
             </div>
 
             <button
