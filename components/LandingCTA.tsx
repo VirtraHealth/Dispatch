@@ -15,7 +15,7 @@ export function LandingCTA({ variant }: LandingCTAProps) {
     if (session) {
       router.push('/dashboard')
     } else {
-      signIn('google', { callbackUrl: '/api/auth/redirect' })
+      signIn('google', { callbackUrl: '/auth/callback' })
     }
   }
 

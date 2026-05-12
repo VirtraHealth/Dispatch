@@ -28,10 +28,12 @@ export default function DashboardPage() {
       if (settingsData.settings) {
         setSettings(settingsData.settings)
         setInstructionsDraft(settingsData.settings.personal_instructions || '')
+      } else {
+        router.replace('/onboarding')
       }
       if (historyData.digests) setDigests(historyData.digests)
     }).finally(() => setLoading(false))
-  }, [])
+  }, [router])
 
   async function sendNow() {
     setSending(true)
