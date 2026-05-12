@@ -1,14 +1,7 @@
-import { google } from 'googleapis'
+import { Resend } from 'resend'
 import { parseBodyToHtml } from '@/lib/parse-digest'
 
-async function getGmailClient(accessToken: string, refreshToken: string) {
-  const auth = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET
-  )
-  auth.setCredentials({ access_token: accessToken, refresh_token: refreshToken })
-  return google.gmail({ version: 'v1', auth })
-}
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function sendDigestEmail({
   to,
@@ -16,35 +9,20 @@ export async function sendDigestEmail({
   body,
   docNames,
   today,
-  accessToken,
-  refreshToken,
 }: {
   to: string
   subject: string
   body: string
   docNames: string[]
   today: string
-  accessToken: string
-  refreshToken: string
 }) {
-  const htmlBody = buildEmailHtml({ body, docNames, today })
-  const gmail = await getGmailClient(accessToken, refreshToken)
+  const html = buildEmailHtml({ body, docNames, today })
 
-  // Gmail API requires a base64url-encoded RFC 2822 message
-  const message = [
-    `To: ${to}`,
-    `Subject: ${subject}`,
-    'MIME-Version: 1.0',
-    'Content-Type: text/html; charset=utf-8',
-    '',
-    htmlBody,
-  ].join('\r\n')
-
-  const encoded = Buffer.from(message).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-
-  await gmail.users.messages.send({
-    userId: 'me',
-    requestBody: { raw: encoded },
+  await resend.emails.send({
+    from: 'Dispatch <digest@mydailyjournal.net>',
+    to,
+    subject,
+    html,
   })
 }
 

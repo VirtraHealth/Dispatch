@@ -86,8 +86,6 @@ export async function GET(req: NextRequest) {
           body,
           docNames: docs.map(d => d.name),
           today,
-          accessToken: user.google_access_token,
-          refreshToken: user.google_refresh_token,
         })
 
         await supabaseAdmin.from('digests').insert({

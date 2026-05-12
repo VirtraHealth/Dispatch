@@ -104,8 +104,6 @@ export async function POST() {
       body,
       docNames: docs.map(d => d.name),
       today,
-      accessToken: user.google_access_token,
-      refreshToken: user.google_refresh_token,
     })
 
     const { data: digest } = await supabaseAdmin
