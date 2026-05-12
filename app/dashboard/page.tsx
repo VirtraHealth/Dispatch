@@ -2,19 +2,22 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { DigestCard } from '@/components/DigestCard'
 import type { Digest, UserSettings } from '@/types'
 
 export default function DashboardPage() {
   const { data: session } = useSession()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [settings, setSettings] = useState<UserSettings | null>(null)
   const [digests, setDigests] = useState<Digest[]>([])
   const [loading, setLoading] = useState(true)
   const [instantThisWeek, setInstantThisWeek] = useState(0)
   const [sending, setSending] = useState(false)
   const [sendStatus, setSendStatus] = useState<'idle' | 'success' | 'error' | 'limit'>('idle')
+  const [accessStatus, setAccessStatus] = useState<{ active: boolean; trialing: boolean; daysLeft: number } | null>(null)
+  const [subscribing, setSubscribing] = useState(false)
 
   // Instructions inline editing
   const [instructionsEditing, setInstructionsEditing] = useState(false)
@@ -25,7 +28,8 @@ export default function DashboardPage() {
     Promise.all([
       fetch('/api/user/settings').then(r => r.json()),
       fetch('/api/digest/history').then(r => r.json()),
-    ]).then(([settingsData, historyData]) => {
+      fetch('/api/billing/status').then(r => r.json()),
+    ]).then(([settingsData, historyData, billingData]) => {
       if (settingsData.settings) {
         setSettings(settingsData.settings)
         setInstructionsDraft(settingsData.settings.personal_instructions || '')
@@ -34,8 +38,26 @@ export default function DashboardPage() {
       }
       if (historyData.digests) setDigests(historyData.digests)
       if (typeof historyData.instantThisWeek === 'number') setInstantThisWeek(historyData.instantThisWeek)
+      if (billingData) setAccessStatus(billingData)
     }).finally(() => setLoading(false))
   }, [router])
+
+  async function subscribe() {
+    setSubscribing(true)
+    try {
+      const res = await fetch('/api/billing/checkout', { method: 'POST' })
+      const { url } = await res.json()
+      if (url) window.location.href = url
+    } catch {
+      setSubscribing(false)
+    }
+  }
+
+  async function manageSubscription() {
+    const res = await fetch('/api/billing/portal', { method: 'POST' })
+    const { url } = await res.json()
+    if (url) window.location.href = url
+  }
 
   async function sendNow() {
     setSending(true)
@@ -107,6 +129,14 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between mb-3">
           <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">Dispatch</span>
           <div className="flex items-center gap-4">
+            {accessStatus?.active && !accessStatus?.trialing && (
+              <button
+                onClick={manageSubscription}
+                className="text-sm text-gray-400 hover:text-gray-600 font-sans transition-colors"
+              >
+                Billing
+              </button>
+            )}
             <button
               onClick={() => router.push('/settings')}
               className="text-sm text-gray-400 hover:text-gray-600 font-sans transition-colors"
@@ -116,6 +146,42 @@ export default function DashboardPage() {
             <span className="text-sm text-gray-400 font-sans">{session?.user?.email}</span>
           </div>
         </div>
+
+        {/* Trial banner */}
+        {accessStatus?.trialing && accessStatus?.daysLeft > 0 && (
+          <div className="bg-indigo-50 border border-indigo-100 rounded-xl px-5 py-3 mb-6 flex items-center justify-between">
+            <p className="text-sm text-indigo-700 font-sans">
+              {accessStatus.daysLeft === 1
+                ? 'Last day of your free trial'
+                : `${accessStatus.daysLeft} days left in your free trial`}
+            </p>
+            <button
+              onClick={subscribe}
+              disabled={subscribing}
+              className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 font-sans disabled:opacity-50"
+            >
+              {subscribing ? 'Loading…' : 'Subscribe — $2.99/mo'}
+            </button>
+          </div>
+        )}
+
+        {/* Paywall */}
+        {accessStatus && !accessStatus.active && (
+          <div className="bg-white border border-gray-100 rounded-2xl p-8 mb-8 text-center">
+            <h2 className="font-serif text-2xl text-ink mb-2">Your trial has ended</h2>
+            <p className="text-gray-500 font-sans text-sm mb-6 leading-relaxed">
+              Your daily digest is paused. Subscribe to keep your thinking sharp every morning.
+            </p>
+            <button
+              onClick={subscribe}
+              disabled={subscribing}
+              className="bg-indigo-600 text-white px-8 py-3.5 rounded-xl text-sm font-semibold font-sans hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+            >
+              {subscribing ? 'Loading…' : 'Resume my digest — $2.99/mo'}
+            </button>
+            <p className="text-xs text-gray-400 font-sans mt-3">Cancel anytime.</p>
+          </div>
+        )}
 
         {/* Tagline */}
         <p className="text-gray-400 text-sm font-sans mb-10">

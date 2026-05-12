@@ -5,6 +5,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { readDocsFromFolders } from '@/lib/google-drive'
 import { generateDigest } from '@/lib/claude'
 import { sendDigestEmail } from '@/lib/email'
+import { isSubscriptionActive } from '@/lib/stripe'
 
 export const runtime = 'nodejs'
 export const maxDuration = 120
@@ -17,11 +18,15 @@ export async function POST() {
 
   const { data: user } = await supabaseAdmin
     .from('users')
-    .select('id, google_access_token, google_refresh_token')
+    .select('id, google_access_token, google_refresh_token, subscription_status, trial_started_at')
     .eq('email', session.user.email)
     .single()
 
   if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 })
+
+  if (!isSubscriptionActive(user.subscription_status, user.trial_started_at)) {
+    return NextResponse.json({ error: 'Subscription required' }, { status: 402 })
+  }
 
   const { data: settings } = await supabaseAdmin
     .from('user_settings')

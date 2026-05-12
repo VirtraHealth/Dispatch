@@ -76,7 +76,7 @@ export default function LandingPage() {
         </p>
         <LandingCTA variant="hero" />
         <p className="text-xs text-gray-400 mt-4 font-sans">
-          Free to try · No credit card · Your docs stay private
+          7-day free trial · No credit card · Your docs stay private
         </p>
       </section>
 
