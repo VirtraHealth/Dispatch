@@ -111,6 +111,7 @@ const [settings, setSettings] = useState<UserSettings | null>(null)
       if (res.ok) {
         setFeatureStatus('success')
         setFeatureText('')
+        setTimeout(() => setFeatureStatus('idle'), 4000)
       } else {
         setFeatureStatus('error')
       }
@@ -120,6 +121,7 @@ const [settings, setSettings] = useState<UserSettings | null>(null)
       setFeatureSending(false)
     }
   }
+
 
   async function saveInstructions() {
     if (!settings) return

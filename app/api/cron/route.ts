@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { readDocsFromFolders } from '@/lib/google-drive'
 import { generateDigest } from '@/lib/claude'
-import { sendDigestEmail } from '@/lib/email'
+import { sendDigestEmail, sendContextNudgeEmail } from '@/lib/email'
 import { getUsersDueForDigest } from '@/lib/digest-scheduler'
 
 export const runtime = 'nodejs'
@@ -43,6 +43,24 @@ export async function GET(req: NextRequest) {
 
         if (!docs.length) {
           console.log(`[cron] No docs found for ${user.email}`)
+          // Send a one-time nudge email if the user has never had a digest or nudge
+          const { count: priorCount } = await supabaseAdmin
+            .from('digests')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', setting.user_id)
+          if ((priorCount ?? 0) === 0) {
+            await sendContextNudgeEmail({ to: setting.delivery_email })
+            await supabaseAdmin.from('digests').insert({
+              user_id: setting.user_id,
+              subject: 'nudge_sent',
+              body_html: '',
+              docs_read: [],
+              doc_count: 0,
+              status: 'nudge',
+              source: 'nudge',
+            })
+            console.log(`[cron] Context nudge sent to ${user.email}`)
+          }
           return
         }
 
@@ -64,11 +82,12 @@ export async function GET(req: NextRequest) {
           })
           .join('\n')
 
-        // Detect first digest
+        // Detect first real digest (exclude nudge records)
         const { count: digestCount } = await supabaseAdmin
           .from('digests')
           .select('id', { count: 'exact', head: true })
           .eq('user_id', setting.user_id)
+          .eq('status', 'sent')
 
         const isFirstDigest = (digestCount ?? 0) === 0
 

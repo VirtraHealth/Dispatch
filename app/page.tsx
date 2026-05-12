@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { LandingCTA } from '@/components/LandingCTA'
-import { LandingRedirect } from '@/components/LandingRedirect'
 
 const SAMPLE_DIGEST = {
   date: 'Sunday, May 10, 2025',
@@ -47,9 +46,6 @@ Questions to sit with this week:
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-cream">
-      {/* Redirect authenticated users straight to dashboard */}
-      <LandingRedirect />
-
       {/* Nav */}
       <nav className="max-w-5xl mx-auto px-6 py-6 flex items-center justify-between">
         <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">

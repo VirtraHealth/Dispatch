@@ -147,6 +147,12 @@ export default function OnboardingPage() {
             >
               Continue
             </button>
+            <button
+              onClick={() => setStep(0)}
+              className="mt-3 w-full text-sm text-gray-400 hover:text-gray-600 font-sans py-2 transition-colors"
+            >
+              ← Back
+            </button>
           </div>
         )}
 
@@ -213,6 +219,12 @@ export default function OnboardingPage() {
               className="mt-6 w-full bg-indigo-600 text-white rounded-xl py-3.5 text-sm font-semibold font-sans hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? 'Setting up your digest…' : 'Start my first digest'}
+            </button>
+            <button
+              onClick={() => setStep(1)}
+              className="mt-3 w-full text-sm text-gray-400 hover:text-gray-600 font-sans py-2 transition-colors"
+            >
+              ← Back
             </button>
 
             <p className="text-xs text-gray-400 text-center mt-3 font-sans">
