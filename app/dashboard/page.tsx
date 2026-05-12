@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { DigestCard } from '@/components/DigestCard'
 import type { Digest, UserSettings } from '@/types'
 
 export default function DashboardPage() {
   const { data: session } = useSession()
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const [settings, setSettings] = useState<UserSettings | null>(null)
+const [settings, setSettings] = useState<UserSettings | null>(null)
   const [digests, setDigests] = useState<Digest[]>([])
   const [loading, setLoading] = useState(true)
   const [instantThisWeek, setInstantThisWeek] = useState(0)
