@@ -19,10 +19,15 @@ export async function GET() {
 
   const { data: digests } = await supabaseAdmin
     .from('digests')
-    .select('id, sent_at, subject, docs_read, doc_count, status')
+    .select('id, sent_at, subject, docs_read, doc_count, status, source')
     .eq('user_id', user.id)
     .order('sent_at', { ascending: false })
     .limit(30)
 
-  return NextResponse.json({ digests: digests || [] })
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+  const instantThisWeek = (digests || []).filter(
+    d => d.source === 'instant' && d.sent_at >= sevenDaysAgo
+  ).length
+
+  return NextResponse.json({ digests: digests || [], instantThisWeek })
 }

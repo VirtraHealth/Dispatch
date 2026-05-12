@@ -12,8 +12,9 @@ export default function DashboardPage() {
   const [settings, setSettings] = useState<UserSettings | null>(null)
   const [digests, setDigests] = useState<Digest[]>([])
   const [loading, setLoading] = useState(true)
+  const [instantThisWeek, setInstantThisWeek] = useState(0)
   const [sending, setSending] = useState(false)
-  const [sendStatus, setSendStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [sendStatus, setSendStatus] = useState<'idle' | 'success' | 'error' | 'limit'>('idle')
 
   // Instructions inline editing
   const [instructionsEditing, setInstructionsEditing] = useState(false)
@@ -32,6 +33,7 @@ export default function DashboardPage() {
         router.replace('/onboarding')
       }
       if (historyData.digests) setDigests(historyData.digests)
+      if (typeof historyData.instantThisWeek === 'number') setInstantThisWeek(historyData.instantThisWeek)
     }).finally(() => setLoading(false))
   }, [router])
 
@@ -44,6 +46,9 @@ export default function DashboardPage() {
         setSendStatus('success')
         const data = await fetch('/api/digest/history').then(r => r.json())
         if (data.digests) setDigests(data.digests)
+        if (typeof data.instantThisWeek === 'number') setInstantThisWeek(data.instantThisWeek)
+      } else if (res.status === 429) {
+        setSendStatus('limit')
       } else {
         setSendStatus('error')
       }
@@ -278,19 +283,29 @@ export default function DashboardPage() {
         <div className="mb-10">
           <button
             onClick={sendNow}
-            disabled={sending || !settings?.folder_ids?.length}
+            disabled={sending || !settings?.folder_ids?.length || instantThisWeek >= 4}
             className="w-full bg-ink text-white rounded-xl py-3.5 text-sm font-semibold font-sans hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {sending ? 'Generating your digest…' : 'Send digest now'}
           </button>
+          <p className="text-xs text-gray-400 text-center mt-2 font-sans">
+            {instantThisWeek >= 4
+              ? 'Weekly instant limit reached — resets in 7 days'
+              : `${4 - instantThisWeek} instant send${4 - instantThisWeek === 1 ? '' : 's'} remaining this week`}
+          </p>
           {sendStatus === 'success' && (
-            <p className="text-sm text-green-600 text-center mt-2 font-sans">
+            <p className="text-sm text-green-600 text-center mt-1 font-sans">
               Digest sent. Check your inbox.
             </p>
           )}
           {sendStatus === 'error' && (
-            <p className="text-sm text-red-500 text-center mt-2 font-sans">
+            <p className="text-sm text-red-500 text-center mt-1 font-sans">
               Something went wrong. Try again.
+            </p>
+          )}
+          {sendStatus === 'limit' && (
+            <p className="text-sm text-amber-600 text-center mt-1 font-sans">
+              Weekly instant limit reached (4 per week).
             </p>
           )}
         </div>

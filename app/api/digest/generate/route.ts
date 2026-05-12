@@ -40,6 +40,19 @@ export async function POST() {
     year: 'numeric',
   })
 
+  // Enforce 4 instant digests per rolling 7-day window
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+  const { count: instantCount } = await supabaseAdmin
+    .from('digests')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .eq('source', 'instant')
+    .gte('sent_at', sevenDaysAgo)
+
+  if ((instantCount ?? 0) >= 4) {
+    return NextResponse.json({ error: 'Weekly instant digest limit reached (4 per week)' }, { status: 429 })
+  }
+
   try {
     const docs = await readDocsFromFolders(
       user.google_access_token,
@@ -104,6 +117,7 @@ export async function POST() {
         docs_read: docs.map(d => d.name),
         doc_count: docs.length,
         status: 'sent',
+        source: 'instant',
       })
       .select()
       .single()

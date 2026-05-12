@@ -97,6 +97,7 @@ export async function GET(req: NextRequest) {
           docs_read: docs.map(d => d.name),
           doc_count: docs.length,
           status: 'sent',
+          source: 'scheduled',
         })
 
         console.log(`[cron] Digest sent to ${user.email}`)
@@ -110,6 +111,7 @@ export async function GET(req: NextRequest) {
           docs_read: [],
           doc_count: 0,
           status: 'failed',
+          source: 'scheduled',
         })
 
         throw e
