@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { FolderPicker } from '@/components/FolderPicker'
-import { FrequencyPicker } from '@/components/FrequencyPicker'
 import type { DriveFolder, UserSettings } from '@/types'
 
 
@@ -19,10 +18,10 @@ export default function SettingsPage() {
   // Form state
   const [selectedFolders, setSelectedFolders] = useState<DriveFolder[]>([])
   const [deliveryEmail, setDeliveryEmail] = useState('')
-  const [frequency, setFrequency] = useState<'daily' | 'weekly' | 'biweekly' | 'monthly'>('daily')
   const [personalInstructions, setPersonalInstructions] = useState('')
   const [onboardingContext, setOnboardingContext] = useState('')
   const [isActive, setIsActive] = useState(true)
+  const [frequency] = useState<'daily'>('daily')
 
   useEffect(() => {
     fetch('/api/user/settings')
@@ -38,10 +37,10 @@ export default function SettingsPage() {
             }))
           )
           setDeliveryEmail(s.delivery_email || session?.user?.email || '')
-          setFrequency(s.frequency || 'daily')
           setPersonalInstructions(s.personal_instructions || '')
           setOnboardingContext(s.onboarding_context || '')
           setIsActive(s.is_active ?? true)
+
         }
       })
       .finally(() => setLoading(false))
@@ -145,21 +144,13 @@ export default function SettingsPage() {
             />
           </div>
 
-          {/* Frequency */}
-          <div>
-            <label className="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-3 font-sans">
-              Frequency
-            </label>
-            <FrequencyPicker value={frequency} onChange={setFrequency} />
-          </div>
-
           {/* Delivery time (fixed) */}
           <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100">
             <div>
               <div className="text-sm font-semibold text-gray-700 font-sans">Delivery time</div>
-              <div className="text-xs text-gray-400 font-sans mt-0.5">Every morning at 7:00 AM Pacific</div>
+              <div className="text-xs text-gray-400 font-sans mt-0.5">Every morning at 8:00 AM Pacific</div>
             </div>
-            <span className="text-xs text-gray-300 font-sans">Fixed</span>
+            <span className="text-xs text-gray-300 font-sans">Daily</span>
           </div>
 
           {/* Personal instructions */}

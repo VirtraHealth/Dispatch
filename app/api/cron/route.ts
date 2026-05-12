@@ -9,14 +9,10 @@ export const runtime = 'nodejs'
 export const maxDuration = 300
 
 export async function GET(req: NextRequest) {
-  // Accept secret via x-cron-secret header (external cron services)
-  // or Authorization: Bearer header (Vercel built-in cron)
-  const cronSecret = process.env.CRON_SECRET
-  const headerSecret = req.headers.get('x-cron-secret')
   const authHeader = req.headers.get('authorization')
   const bearerSecret = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
 
-  if (headerSecret !== cronSecret && bearerSecret !== cronSecret) {
+  if (bearerSecret !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
