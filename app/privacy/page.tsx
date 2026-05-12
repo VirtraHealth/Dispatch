@@ -63,9 +63,9 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong>Google OAuth tokens.</strong> An access token and refresh token that allow
-                us to read Google Drive files and send email via Gmail on your behalf. These tokens
-                are stored in our database and refreshed automatically so the service keeps running
-                between your visits.
+                us to read Google Drive files on your behalf. These tokens are stored in our
+                database and refreshed automatically so the service keeps running between your
+                visits.
               </li>
               <li>
                 <strong>Folder selections and delivery preferences.</strong> Which Drive folders
@@ -114,11 +114,6 @@ export default function PrivacyPage() {
                 — to read documents in the folders you select. Used only when generating your
                 digest.
               </li>
-              <li>
-                <code className="font-sans text-sm bg-indigo-50 px-1.5 py-0.5 rounded">https://www.googleapis.com/auth/gmail.send</code>{' '}
-                — to send your digest to your inbox. We send email only on your behalf and only
-                for digest delivery. We never read your Gmail inbox.
-              </li>
             </ul>
             <p className="mt-3">
               Dispatch&rsquo;s use of information received from Google APIs adheres to the{' '}
@@ -141,7 +136,7 @@ export default function PrivacyPage() {
             <ul className="list-disc list-outside ml-5 space-y-2">
               <li>To authenticate you and maintain your session.</li>
               <li>To read your selected Drive folders and generate your daily digest.</li>
-              <li>To send the digest to your delivery email address via Gmail.</li>
+              <li>To send the digest to your delivery email address.</li>
               <li>To display your digest history in your dashboard.</li>
               <li>To improve the service (aggregate, anonymised usage metrics only).</li>
             </ul>
@@ -178,8 +173,9 @@ export default function PrivacyPage() {
               7. Third-party services
             </h2>
             <ul className="list-disc list-outside ml-5 space-y-2">
-              <li><strong>Google</strong> — authentication, Drive read access, and Gmail send.</li>
+              <li><strong>Google</strong> — authentication and Drive read access.</li>
               <li><strong>Anthropic (Claude API)</strong> — AI synthesis of your digest content.</li>
+              <li><strong>Resend</strong> — transactional email delivery.</li>
               <li><strong>Supabase</strong> — database hosting.</li>
               <li><strong>Vercel</strong> — application hosting and edge infrastructure.</li>
             </ul>
