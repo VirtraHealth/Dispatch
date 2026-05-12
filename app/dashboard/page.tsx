@@ -128,6 +128,14 @@ const [settings, setSettings] = useState<UserSettings | null>(null)
         <div className="flex items-center justify-between mb-3">
           <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">Dispatch</span>
           <div className="flex items-center gap-4">
+            {session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
+              <button
+                onClick={() => router.push('/admin')}
+                className="text-sm text-gray-400 hover:text-gray-600 font-sans transition-colors"
+              >
+                Admin
+              </button>
+            )}
             {accessStatus?.active && !accessStatus?.trialing && (
               <button
                 onClick={manageSubscription}
