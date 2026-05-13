@@ -112,6 +112,71 @@ export async function sendMarketingEmail({
   })
 }
 
+export async function sendDemoWelcomeEmail({
+  to,
+  name,
+  briefingSubject,
+  briefingBody,
+}: {
+  to: string
+  name: string | null
+  briefingSubject: string
+  briefingBody: string
+}) {
+  const trialUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://mydailyjournal.net'
+  const greeting = name ? `Hi ${name.split(' ')[0]},` : 'Hi,'
+
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body style="font-family:Georgia,'Times New Roman',serif;background:#f0ece0;margin:0;padding:0;color:#1a1a2e">
+  <div style="max-width:640px;margin:0 auto;padding:48px 24px">
+
+    <div style="margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid #d4cfc3">
+      <div style="font-family:-apple-system,sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#4a3f8f;margin-bottom:12px">My Daily Journal</div>
+      <p style="font-family:-apple-system,sans-serif;font-size:14px;color:#8a7d6b;line-height:1.6;margin:0">
+        ${greeting} Here is the briefing we wrote for you — based on what you shared with us.<br>
+        Connect your real notes and every morning will look like this.
+      </p>
+    </div>
+
+    ${parseBodyToHtml(briefingBody)}
+
+    <div style="background:#1a1511;border-radius:16px;padding:36px;margin-top:48px;text-align:center">
+      <div style="font-family:Georgia,serif;font-size:20px;color:#f0ead6;font-weight:400;margin-bottom:12px">
+        Your thinking, amplified — every morning.
+      </div>
+      <p style="font-family:-apple-system,sans-serif;font-size:14px;color:#8a7d6b;line-height:1.7;margin:0 0 28px">
+        Connect your Google Drive notes. Claude reads everything you write<br>and delivers a personal briefing at 8 AM every morning.
+      </p>
+      <a href="${trialUrl}" style="display:inline-block;background:#c8a96e;color:#0f0d0b;font-family:-apple-system,sans-serif;font-size:14px;font-weight:700;text-decoration:none;padding:14px 36px;border-radius:10px;letter-spacing:0.5px">
+        Start my free trial →
+      </a>
+      <div style="font-family:-apple-system,sans-serif;font-size:11px;color:#4a4035;margin-top:12px">
+        7-day free trial · $4.99/mo after · Cancel anytime
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #d4cfc3;padding-top:24px;margin-top:48px;font-family:-apple-system,sans-serif;font-size:12px;color:#aaa;text-align:center;line-height:1.6">
+      My Daily Journal · Your thinking, amplified<br>
+      You joined at mydailyjournal.net/join
+    </div>
+
+  </div>
+</body>
+</html>`
+
+  await resend.emails.send({
+    from: 'My Daily Journal <digest@mydailyjournal.net>',
+    to,
+    subject: `${briefingSubject} — your preview briefing`,
+    html,
+  })
+}
+
 export async function sendFeatureRequestEmail({ from, text }: { from: string; text: string }) {
   await resend.emails.send({
     from: 'My Daily Journal <digest@mydailyjournal.net>',
