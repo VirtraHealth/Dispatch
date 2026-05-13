@@ -88,7 +88,7 @@ export default function AdminPage() {
         <div className="flex items-center justify-between mb-10">
           <div>
             <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">
-              Dispatch
+              My Daily Journal
             </span>
             <h1 className="font-serif text-3xl text-ink mt-1">Admin</h1>
           </div>

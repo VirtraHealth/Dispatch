@@ -94,7 +94,7 @@ export default function SettingsPage() {
 
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
-          <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">Dispatch</span>
+          <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">My Daily Journal</span>
           <button
             onClick={() => router.push('/dashboard')}
             className="text-sm text-gray-400 hover:text-gray-600 font-sans transition-colors"

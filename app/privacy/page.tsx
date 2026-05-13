@@ -2,8 +2,8 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Dispatch',
-  description: 'How Dispatch collects, uses, and protects your data.',
+  title: 'Privacy Policy — My Daily Journal',
+  description: 'How My Daily Journal collects, uses, and protects your data.',
 }
 
 export default function PrivacyPage() {
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
           href="/"
           className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600 hover:text-indigo-700 transition-colors"
         >
-          Dispatch
+          My Daily Journal
         </Link>
         <Link
           href="/"
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
               1. Who we are
             </h2>
             <p>
-              Dispatch is a daily AI email digest service (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;). Dispatch reads documents you
+              My Daily Journal is a daily AI email digest service (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;). My Daily Journal reads documents you
               select from Google Drive, synthesises them using Claude (Anthropic), and delivers a
               formatted digest to your inbox each morning. Questions about this policy can be sent
               to <a href="mailto:dispatch@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">dispatch@mydailyjournal.net</a>.
@@ -69,7 +69,7 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong>Folder selections and delivery preferences.</strong> Which Drive folders
-                you want Dispatch to read, what time you want your digest delivered, your timezone,
+                you want My Daily Journal to read, what time you want your digest delivered, your timezone,
                 and any personal instructions you give Claude.
               </li>
               <li>
@@ -92,7 +92,7 @@ export default function PrivacyPage() {
               Only the finished digest HTML is saved.
             </p>
             <p>
-              We request <strong>read-only</strong> Drive access. Dispatch cannot create, edit,
+              We request <strong>read-only</strong> Drive access. My Daily Journal cannot create, edit,
               move, or delete any of your files.
             </p>
           </section>
@@ -116,7 +116,7 @@ export default function PrivacyPage() {
               </li>
             </ul>
             <p className="mt-3">
-              Dispatch&rsquo;s use of information received from Google APIs adheres to the{' '}
+              My Daily Journal&rsquo;s use of information received from Google APIs adheres to the{' '}
               <a
                 href="https://developers.google.com/terms/api-services-user-data-policy"
                 target="_blank"
@@ -190,7 +190,7 @@ export default function PrivacyPage() {
               8. Revoking access
             </h2>
             <p className="mb-3">
-              You can revoke Dispatch&rsquo;s access to your Google account at any time from your{' '}
+              You can revoke My Daily Journal&rsquo;s access to your Google account at any time from your{' '}
               <a
                 href="https://myaccount.google.com/permissions"
                 target="_blank"
@@ -214,7 +214,7 @@ export default function PrivacyPage() {
                 dispatch@mydailyjournal.net
               </a>{' '}
               with the subject line &ldquo;Delete my account&rdquo; from the email address
-              associated with your Dispatch account. We will complete deletion within 30 days and
+              associated with your My Daily Journal account. We will complete deletion within 30 days and
               confirm by email.
             </p>
           </section>
@@ -224,7 +224,7 @@ export default function PrivacyPage() {
               10. Children&rsquo;s privacy
             </h2>
             <p>
-              Dispatch is not directed to children under the age of 13. We do not knowingly
+              My Daily Journal is not directed to children under the age of 13. We do not knowingly
               collect personal information from children under 13. If you believe a child has
               provided us with personal information, please contact us and we will delete it.
             </p>
@@ -236,7 +236,7 @@ export default function PrivacyPage() {
             </h2>
             <p>
               We may update this Privacy Policy from time to time. When we do, we will update the
-              effective date above. Continued use of Dispatch after changes constitutes acceptance
+              effective date above. Continued use of My Daily Journal after changes constitutes acceptance
               of the revised policy.
             </p>
           </section>
@@ -260,7 +260,7 @@ export default function PrivacyPage() {
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="font-sans text-xs font-bold tracking-widest uppercase text-gray-300">Dispatch</span>
+          <span className="font-sans text-xs font-bold tracking-widest uppercase text-gray-300">My Daily Journal</span>
           <div className="flex items-center gap-6">
             <Link href="/about" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">About</Link>
             <Link href="/privacy" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">Privacy Policy</Link>

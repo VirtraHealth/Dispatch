@@ -119,7 +119,7 @@ export async function GET(req: NextRequest) {
 
         await supabaseAdmin.from('digests').insert({
           user_id: setting.user_id,
-          subject: `Dispatch · ${today}`,
+          subject: `My Daily Journal · ${today}`,
           body_html: '',
           docs_read: [],
           doc_count: 0,

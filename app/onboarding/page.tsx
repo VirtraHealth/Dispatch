@@ -96,7 +96,7 @@ export default function OnboardingPage() {
       <div className="w-full max-w-lg">
         <div className="mb-10">
           <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">
-            Dispatch
+            My Daily Journal
           </span>
         </div>
 
@@ -107,7 +107,7 @@ export default function OnboardingPage() {
           <div>
             <h1 className="font-serif text-3xl text-ink mb-3">Choose your writing folders</h1>
             <p className="text-gray-500 text-base mb-6 font-sans leading-relaxed">
-              Select up to 3 folders containing your notes, journal entries, or docs. These are what Dispatch will read each morning.
+              Select up to 3 folders containing your notes, journal entries, or docs. These are what My Daily Journal will read each morning.
             </p>
             <FolderPicker selected={selectedFolders} onChange={setSelectedFolders} max={3} />
             <button

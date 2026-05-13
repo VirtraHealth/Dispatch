@@ -49,7 +49,7 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="max-w-5xl mx-auto px-6 py-6 flex items-center justify-between">
         <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">
-          Dispatch
+          My Daily Journal
         </span>
         <div className="flex items-center gap-6">
           <Link href="/about" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
@@ -87,7 +87,7 @@ export default function LandingPage() {
                 </svg>
               ),
               title: 'Connect Drive',
-              description: 'Point Dispatch at up to 3 folders — your journal, notes, ideas. Read-only access. We never edit or delete anything.',
+              description: 'Point My Daily Journal at up to 3 folders — your journal, notes, ideas. Read-only access. We never edit or delete anything.',
             },
             {
               icon: (
@@ -130,7 +130,7 @@ export default function LandingPage() {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           {/* Email header bar */}
           <div className="border-b border-gray-100 px-8 py-5">
-            <div className="text-xs font-sans font-bold tracking-widest uppercase text-indigo-600 mb-1">Dispatch</div>
+            <div className="text-xs font-sans font-bold tracking-widest uppercase text-indigo-600 mb-1">My Daily Journal</div>
             <div className="font-serif text-xl text-ink">{SAMPLE_DIGEST.date}</div>
             <div className="text-xs text-gray-400 font-sans mt-1">Reading from: {SAMPLE_DIGEST.folders}</div>
           </div>
@@ -167,7 +167,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="font-sans text-xs font-bold tracking-widest uppercase text-gray-300">Dispatch</span>
+          <span className="font-sans text-xs font-bold tracking-widest uppercase text-gray-300">My Daily Journal</span>
           <div className="flex items-center gap-6">
             <Link href="/about" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">About</Link>
             <Link href="/privacy" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">Privacy Policy</Link>

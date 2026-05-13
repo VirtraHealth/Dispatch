@@ -19,7 +19,7 @@ export async function sendDigestEmail({
   const html = buildEmailHtml({ body, docNames, today })
 
   await resend.emails.send({
-    from: 'Dispatch <digest@mydailyjournal.net>',
+    from: 'My Daily Journal <digest@mydailyjournal.net>',
     to,
     subject,
     html,
@@ -38,7 +38,7 @@ export async function sendContextNudgeEmail({ to }: { to: string }) {
   <div style="max-width:640px;margin:0 auto;padding:48px 24px">
 
     <div style="margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid #e0ddd4">
-      <div style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a3f8f;margin-bottom:8px">Dispatch</div>
+      <div style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a3f8f;margin-bottom:8px">My Daily Journal</div>
     </div>
 
     <p style="font-size:20px;font-weight:normal;color:#1a1a2e;margin:0 0 16px">Your first digest is almost ready.</p>
@@ -46,7 +46,7 @@ export async function sendContextNudgeEmail({ to }: { to: string }) {
       We couldn&apos;t find any writing in your connected folders yet — so we held off on sending your digest until there&apos;s something to read.
     </p>
     <p style="font-family:-apple-system,sans-serif;font-size:15px;color:#555;line-height:1.7;margin:0 0 32px">
-      In the meantime, adding a short note about what you&apos;re working on and thinking about lets Dispatch write something personal for you right now — even before your first notes are in.
+      In the meantime, adding a short note about what you&apos;re working on and thinking about lets My Daily Journal write something personal for you right now — even before your first notes are in.
     </p>
 
     <a href="${dashboardUrl}" style="display:inline-block;background:#4a3f8f;color:#fff;font-family:-apple-system,sans-serif;font-size:14px;font-weight:600;text-decoration:none;padding:14px 28px;border-radius:10px">
@@ -54,7 +54,7 @@ export async function sendContextNudgeEmail({ to }: { to: string }) {
     </a>
 
     <div style="border-top:1px solid #e0ddd4;padding-top:24px;margin-top:48px;font-family:-apple-system,sans-serif;font-size:12px;color:#bbb;text-align:center;line-height:1.6">
-      Dispatch · Your thinking, amplified<br>
+      My Daily Journal · Your thinking, amplified<br>
       <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" style="color:#bbb">Manage settings</a>
     </div>
 
@@ -63,16 +63,16 @@ export async function sendContextNudgeEmail({ to }: { to: string }) {
 </html>`
 
   await resend.emails.send({
-    from: 'Dispatch <digest@mydailyjournal.net>',
+    from: 'My Daily Journal <digest@mydailyjournal.net>',
     to,
-    subject: 'Your first Dispatch digest is almost ready',
+    subject: 'Your first My Daily Journal digest is almost ready',
     html,
   })
 }
 
 export async function sendFeatureRequestEmail({ from, text }: { from: string; text: string }) {
   await resend.emails.send({
-    from: 'Dispatch <digest@mydailyjournal.net>',
+    from: 'My Daily Journal <digest@mydailyjournal.net>',
     to: process.env.ADMIN_EMAIL!,
     subject: `Feature request from ${from}`,
     html: `<p><strong>From:</strong> ${from}</p><p>${text.replace(/\n/g, '<br>')}</p>`,
@@ -99,7 +99,7 @@ function buildEmailHtml({
 
     <!-- Header -->
     <div style="margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid #e0ddd4">
-      <div style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a3f8f;margin-bottom:8px">Dispatch</div>
+      <div style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a3f8f;margin-bottom:8px">My Daily Journal</div>
       <div style="font-size:26px;font-weight:normal;color:#1a1a2e;margin-bottom:6px">${today}</div>
       <div style="font-size:12px;color:#aaa;font-family:-apple-system,sans-serif">Reading from: ${docNames.slice(0, 5).join(' · ')}</div>
     </div>
@@ -109,7 +109,7 @@ function buildEmailHtml({
 
     <!-- Footer -->
     <div style="border-top:1px solid #e0ddd4;padding-top:24px;margin-top:48px;font-family:-apple-system,sans-serif;font-size:12px;color:#bbb;text-align:center;line-height:1.6">
-      Dispatch · Your thinking, amplified<br>
+      My Daily Journal · Your thinking, amplified<br>
       <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" style="color:#bbb">Manage settings</a>
     </div>
 

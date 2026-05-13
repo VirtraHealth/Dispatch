@@ -16,6 +16,7 @@ const config: Config = {
         },
         cream: '#f8f7f3',
         ink: '#1a1a2e',
+        gold: '#c47c1a',
       },
       fontFamily: {
         serif: ['Georgia', 'Times New Roman', 'serif'],

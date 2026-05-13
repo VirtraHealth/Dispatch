@@ -45,7 +45,7 @@ export default async function DigestDetailPage({ params }: { params: { id: strin
             href="/dashboard"
             className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600 hover:text-indigo-700 transition-colors"
           >
-            ← Dispatch
+            ← My Daily Journal
           </Link>
         </div>
 

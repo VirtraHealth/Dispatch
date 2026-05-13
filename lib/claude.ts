@@ -110,7 +110,7 @@ Write the full digest now.`
 
   // Parse subject from <subject>...</subject> tag
   const subjectMatch = rawOutput.match(/<subject>([\s\S]*?)<\/subject>/)
-  const subject = subjectMatch ? subjectMatch[1].trim() : `Dispatch · ${today}`
+  const subject = subjectMatch ? subjectMatch[1].trim() : `My Daily Journal · ${today}`
 
   // Strip the subject tag from the body
   const body = rawOutput.replace(/<subject>[\s\S]*?<\/subject>\s*/m, '').trim()

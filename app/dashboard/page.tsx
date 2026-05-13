@@ -197,7 +197,7 @@ const [settings, setSettings] = useState<UserSettings | null>(null)
 
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">Dispatch</span>
+          <span className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">My Daily Journal</span>
           <div className="flex items-center gap-4">
             {isAdmin && (
               <button
@@ -433,7 +433,7 @@ const [settings, setSettings] = useState<UserSettings | null>(null)
           <div className="mb-10 border-2 border-dashed border-gray-200 rounded-xl p-6 text-center">
             <div className="text-sm font-semibold text-gray-700 font-sans mb-1">No folders connected yet</div>
             <p className="text-xs text-gray-400 font-sans mb-4">
-              Add up to 3 Google Drive folders for Dispatch to read. The more you write, the better it gets.
+              Add up to 3 Google Drive folders for My Daily Journal to read. The more you write, the better it gets.
             </p>
             <button
               onClick={() => router.push('/settings')}
@@ -504,7 +504,7 @@ const [settings, setSettings] = useState<UserSettings | null>(null)
               value={featureText}
               onChange={e => setFeatureText(e.target.value)}
               rows={3}
-              placeholder="What would make Dispatch better?"
+              placeholder="What would make My Daily Journal better?"
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
             />
             <div className="flex items-center justify-between mt-3">

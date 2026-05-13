@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 import { LandingCTA } from '@/components/LandingCTA'
 
 export const metadata: Metadata = {
-  title: 'About Dispatch',
-  description: 'Dispatch is a daily AI email digest that reads your Google Drive notes and sends you deeper research, philosophical threads, and new connections every morning.',
+  title: 'About My Daily Journal',
+  description: 'My Daily Journal is a daily AI email digest that reads your Google Drive notes and sends you deeper research, philosophical threads, and new connections every morning.',
 }
 
 export default function AboutPage() {
@@ -16,7 +16,7 @@ export default function AboutPage() {
           href="/"
           className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600 hover:text-indigo-700 transition-colors"
         >
-          Dispatch
+          My Daily Journal
         </Link>
         <LandingCTA variant="nav" />
       </nav>
@@ -28,7 +28,7 @@ export default function AboutPage() {
             About
           </div>
           <h1 className="font-serif text-4xl text-ink mb-4 leading-tight">
-            What is Dispatch?
+            What is My Daily Journal?
           </h1>
           <p className="font-serif text-xl text-gray-500 leading-relaxed">
             A daily email that reads everything you write and goes deeper on it.
@@ -40,12 +40,12 @@ export default function AboutPage() {
           <p>
             Most of us keep notes, journals, and documents scattered across Google Drive —
             fragments of ideas we mean to return to, questions we haven&rsquo;t finished asking,
-            observations that haven&rsquo;t yet found their context. Dispatch is built for that
+            observations that haven&rsquo;t yet found their context. My Daily Journal is built for that
             kind of writing.
           </p>
 
           <p>
-            Every morning, Dispatch reads the documents in the Drive folders you choose. It
+            Every morning, My Daily Journal reads the documents in the Drive folders you choose. It
             passes everything to Claude — Anthropic&rsquo;s AI model — and asks it to do
             something a good editor or intellectual friend might do: find the philosophical
             traditions your ideas are touching, surface the business thinkers who have wrestled
@@ -69,7 +69,7 @@ export default function AboutPage() {
                 {
                   step: '01',
                   title: 'Connect Google Drive',
-                  body: 'Sign in with Google and point Dispatch at up to three folders. Read-only access — Dispatch never edits or deletes anything.',
+                  body: 'Sign in with Google and point My Daily Journal at up to three folders. Read-only access — My Daily Journal never edits or deletes anything.',
                 },
                 {
                   step: '02',
@@ -84,7 +84,7 @@ export default function AboutPage() {
                 {
                   step: '04',
                   title: 'Review and adjust',
-                  body: 'Your dashboard shows every past digest. You can change which folders Dispatch reads, when your digest arrives, and add personal instructions to shape how Claude responds to your writing.',
+                  body: 'Your dashboard shows every past digest. You can change which folders My Daily Journal reads, when your digest arrives, and add personal instructions to shape how Claude responds to your writing.',
                 },
               ].map((item) => (
                 <div key={item.step} className="flex gap-6">
@@ -106,7 +106,7 @@ export default function AboutPage() {
               Privacy commitment
             </div>
             <p className="text-sm font-sans text-gray-500 leading-relaxed">
-              Your documents belong to you. Dispatch requests read-only Drive access and uses it
+              Your documents belong to you. My Daily Journal requests read-only Drive access and uses it
               only to generate your digest. Raw document content is never stored — only the
               finished digest HTML is saved. You can revoke access from your Google account at
               any time. Read our full{' '}
@@ -148,7 +148,7 @@ export default function AboutPage() {
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span className="font-sans text-xs font-bold tracking-widest uppercase text-gray-300">Dispatch</span>
+          <span className="font-sans text-xs font-bold tracking-widest uppercase text-gray-300">My Daily Journal</span>
           <div className="flex items-center gap-6">
             <Link href="/about" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">About</Link>
             <Link href="/privacy" className="text-xs text-gray-400 font-sans hover:text-gray-600 transition-colors">Privacy Policy</Link>
