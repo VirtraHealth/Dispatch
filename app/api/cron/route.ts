@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
 
         const isFirstDigest = (digestCount ?? 0) === 0
 
-        const { body, subject } = await generateDigest(
+        const { body, subject, inputTokens, outputTokens } = await generateDigest(
           docs,
           setting.personal_instructions || '',
           setting.onboarding_context || '',
@@ -95,15 +95,7 @@ export async function GET(req: NextRequest) {
           isFirstDigest,
         )
 
-        await sendDigestEmail({
-          to: setting.delivery_email,
-          subject,
-          body,
-          docNames: docs.map(d => d.name),
-          today,
-        })
-
-        await supabaseAdmin.from('digests').insert({
+        const { data: digest } = await supabaseAdmin.from('digests').insert({
           user_id: setting.user_id,
           subject,
           body_html: body,
@@ -111,6 +103,17 @@ export async function GET(req: NextRequest) {
           doc_count: docs.length,
           status: 'sent',
           source: 'scheduled',
+          input_tokens: inputTokens,
+          output_tokens: outputTokens,
+        }).select().single()
+
+        await sendDigestEmail({
+          to: setting.delivery_email,
+          subject,
+          body,
+          docNames: docs.map(d => d.name),
+          today,
+          digestId: digest?.id,
         })
 
         console.log(`[cron] Digest sent to ${user.email}`)

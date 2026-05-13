@@ -50,4 +50,6 @@ export interface DriveDoc {
 export interface DigestResult {
   body: string
   subject: string
+  inputTokens: number
+  outputTokens: number
 }

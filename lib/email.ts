@@ -9,12 +9,14 @@ export async function sendDigestEmail({
   body,
   docNames,
   today,
+  digestId,
 }: {
   to: string
   subject: string
   body: string
   docNames: string[]
   today: string
+  digestId?: string
 }) {
   const html = buildEmailHtml({ body, docNames, today })
 
@@ -23,6 +25,7 @@ export async function sendDigestEmail({
     to,
     subject,
     html,
+    ...(digestId ? { tags: [{ name: 'digest_id', value: digestId }] } : {}),
   })
 }
 
@@ -66,6 +69,45 @@ export async function sendContextNudgeEmail({ to }: { to: string }) {
     from: 'My Daily Journal <digest@mydailyjournal.net>',
     to,
     subject: 'Your first My Daily Journal digest is almost ready',
+    html,
+  })
+}
+
+export async function sendMarketingEmail({
+  to,
+  subject,
+  body,
+}: {
+  to: string
+  subject: string
+  body: string
+}) {
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body style="font-family:Georgia,'Times New Roman',serif;background:#f8f7f3;margin:0;padding:0;color:#1a1a2e">
+  <div style="max-width:640px;margin:0 auto;padding:48px 24px">
+    <div style="margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid #e0ddd4">
+      <div style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a3f8f;margin-bottom:8px">My Daily Journal</div>
+    </div>
+    <div style="font-size:16px;line-height:1.8;color:#1a1a2e">
+      ${body.replace(/\n/g, '<br>')}
+    </div>
+    <div style="border-top:1px solid #e0ddd4;padding-top:24px;margin-top:48px;font-family:-apple-system,sans-serif;font-size:12px;color:#bbb;text-align:center;line-height:1.6">
+      My Daily Journal · Your thinking, amplified<br>
+      <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" style="color:#bbb">Manage settings</a>
+    </div>
+  </div>
+</body>
+</html>`
+
+  await resend.emails.send({
+    from: 'My Daily Journal <digest@mydailyjournal.net>',
+    to,
+    subject,
     html,
   })
 }

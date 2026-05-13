@@ -115,5 +115,10 @@ Write the full digest now.`
   // Strip the subject tag from the body
   const body = rawOutput.replace(/<subject>[\s\S]*?<\/subject>\s*/m, '').trim()
 
-  return { body, subject }
+  return {
+    body,
+    subject,
+    inputTokens: message.usage.input_tokens,
+    outputTokens: message.usage.output_tokens,
+  }
 }

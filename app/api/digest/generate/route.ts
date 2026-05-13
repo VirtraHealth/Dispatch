@@ -95,21 +95,13 @@ export async function POST() {
       })
       .join('\n')
 
-    const { body, subject } = await generateDigest(
+    const { body, subject, inputTokens, outputTokens } = await generateDigest(
       docs,
       settings.personal_instructions || '',
       settings.onboarding_context || '',
       recentFeedback,
       isFirstDigest,
     )
-
-    await sendDigestEmail({
-      to: settings.delivery_email,
-      subject,
-      body,
-      docNames: docs.map(d => d.name),
-      today,
-    })
 
     const { data: digest } = await supabaseAdmin
       .from('digests')
@@ -121,9 +113,20 @@ export async function POST() {
         doc_count: docs.length,
         status: 'sent',
         source: 'instant',
+        input_tokens: inputTokens,
+        output_tokens: outputTokens,
       })
       .select()
       .single()
+
+    await sendDigestEmail({
+      to: settings.delivery_email,
+      subject,
+      body,
+      docNames: docs.map(d => d.name),
+      today,
+      digestId: digest?.id,
+    })
 
     return NextResponse.json({ success: true, digest })
   } catch (e) {
