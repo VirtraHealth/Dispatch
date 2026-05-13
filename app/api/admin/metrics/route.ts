@@ -116,8 +116,8 @@ export async function GET() {
   let costPerEmail = 0
   if (recentDigests && recentDigests.length > 0) {
     const totalCost = recentDigests.reduce((sum, d) => {
-      const inputCost = ((d.input_tokens || 0) / 1_000_000) * 15
-      const outputCost = ((d.output_tokens || 0) / 1_000_000) * 75
+      const inputCost = ((d.input_tokens || 0) / 1_000_000) * 3
+      const outputCost = ((d.output_tokens || 0) / 1_000_000) * 15
       const emailCost = 0.0008
       return sum + inputCost + outputCost + emailCost
     }, 0)

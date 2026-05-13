@@ -94,7 +94,7 @@ Shape and name the other sections to fit this person's domain. Make the digest f
 Write the full digest now.`
 
   const message = await client.messages.create({
-    model: 'claude-opus-4-5',
+    model: 'claude-sonnet-4-6',
     max_tokens: 3500,
     system: [
       {
