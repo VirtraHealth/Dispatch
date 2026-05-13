@@ -45,7 +45,7 @@ export default function PrivacyPage() {
               My Daily Journal is a daily AI email digest service (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;). My Daily Journal reads documents you
               select from Google Drive, synthesises them using Claude (Anthropic), and delivers a
               formatted digest to your inbox each morning. Questions about this policy can be sent
-              to <a href="mailto:dispatch@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">dispatch@mydailyjournal.net</a>.
+              to <a href="mailto:digest@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">digest@mydailyjournal.net</a>.
             </p>
           </section>
 
@@ -210,8 +210,8 @@ export default function PrivacyPage() {
             <p>
               To delete your account and all associated data (including OAuth tokens, settings,
               and digest history), email us at{' '}
-              <a href="mailto:dispatch@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
-                dispatch@mydailyjournal.net
+              <a href="mailto:digest@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
+                digest@mydailyjournal.net
               </a>{' '}
               with the subject line &ldquo;Delete my account&rdquo; from the email address
               associated with your My Daily Journal account. We will complete deletion within 30 days and
@@ -247,8 +247,8 @@ export default function PrivacyPage() {
             </h2>
             <p>
               For any questions or requests regarding this Privacy Policy, please contact us at{' '}
-              <a href="mailto:dispatch@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
-                dispatch@mydailyjournal.net
+              <a href="mailto:digest@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
+                digest@mydailyjournal.net
               </a>
               .
             </p>

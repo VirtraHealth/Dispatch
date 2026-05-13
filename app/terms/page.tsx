@@ -45,8 +45,8 @@ export default function TermsPage() {
               By accessing or using My Daily Journal (&ldquo;the Service&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;), you agree to be bound by these
               Terms of Service (&ldquo;Terms&rdquo;). If you do not agree to these Terms, do not use
               the Service. Questions can be directed to{' '}
-              <a href="mailto:dispatch@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
-                dispatch@mydailyjournal.net
+              <a href="mailto:digest@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
+                digest@mydailyjournal.net
               </a>
               .
             </p>
@@ -185,8 +185,8 @@ export default function TermsPage() {
             <p>
               You may stop using the Service at any time. To delete your account and all
               associated data, email{' '}
-              <a href="mailto:dispatch@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
-                dispatch@mydailyjournal.net
+              <a href="mailto:digest@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
+                digest@mydailyjournal.net
               </a>{' '}
               with &ldquo;Delete my account&rdquo; as the subject. We may also suspend or terminate
               your access if you violate these Terms or if we determine, in our sole discretion,
@@ -226,8 +226,8 @@ export default function TermsPage() {
             </h2>
             <p>
               For questions about these Terms, please contact us at{' '}
-              <a href="mailto:dispatch@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
-                dispatch@mydailyjournal.net
+              <a href="mailto:digest@mydailyjournal.net" className="text-indigo-600 underline underline-offset-2">
+                digest@mydailyjournal.net
               </a>
               .
             </p>

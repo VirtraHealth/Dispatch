@@ -125,10 +125,10 @@ export default function AboutPage() {
             <p>
               For questions, feedback, or support, email us at{' '}
               <a
-                href="mailto:dispatch@mydailyjournal.net"
+                href="mailto:digest@mydailyjournal.net"
                 className="text-indigo-600 underline underline-offset-2"
               >
-                dispatch@mydailyjournal.net
+                digest@mydailyjournal.net
               </a>
               .
             </p>

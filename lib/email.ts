@@ -115,7 +115,7 @@ export async function sendMarketingEmail({
 export async function sendFeatureRequestEmail({ from, text }: { from: string; text: string }) {
   await resend.emails.send({
     from: 'My Daily Journal <digest@mydailyjournal.net>',
-    to: process.env.ADMIN_EMAIL!,
+    to: 'digest@mydailyjournal.net',
     subject: `Feature request from ${from}`,
     html: `<p><strong>From:</strong> ${from}</p><p>${text.replace(/\n/g, '<br>')}</p>`,
   })
