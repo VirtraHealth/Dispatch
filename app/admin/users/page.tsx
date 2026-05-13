@@ -10,6 +10,8 @@ type User = {
   trial_started_at: string | null
   stripe_customer_id: string | null
   created_at: string
+  digest_count: number
+  last_digest_at: string | null
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -80,10 +82,11 @@ export default function AdminUsersPage() {
 
       {/* Users table */}
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
+        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="text-xs font-bold tracking-widest uppercase text-gray-400 font-sans">
             {loading ? 'Loading…' : `Users (${users.length})`}
           </h2>
+          <span className="text-xs text-gray-400 font-sans">Digests · Last sent</span>
         </div>
 
         {loading ? (
@@ -108,6 +111,16 @@ export default function AdminUsersPage() {
                       {daysLeft !== null && (
                         <span className="ml-2">· {daysLeft === 0 ? 'Trial expired' : `${daysLeft}d left in trial`}</span>
                       )}
+                    </div>
+                  </div>
+
+                  {/* Digest stats */}
+                  <div className="text-right flex-shrink-0">
+                    <div className="text-sm font-sans text-ink font-semibold">{user.digest_count}</div>
+                    <div className="text-xs text-gray-400 font-sans">
+                      {user.last_digest_at
+                        ? new Date(user.last_digest_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                        : 'never'}
                     </div>
                   </div>
 
