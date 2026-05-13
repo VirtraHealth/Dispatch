@@ -52,6 +52,9 @@ export default function LandingPage() {
           My Daily Journal
         </span>
         <div className="flex items-center gap-6">
+          <Link href="/blog" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
+            Blog
+          </Link>
           <Link href="/about" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
             About
           </Link>
