@@ -53,3 +53,9 @@ export interface DigestResult {
   inputTokens: number
   outputTokens: number
 }
+
+export interface JournalEntry {
+  id: string
+  content: string
+  created_at: string
+}

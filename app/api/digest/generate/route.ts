@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase'
 import { readDocsFromFolders } from '@/lib/google-drive'
+import { getJournalEntriesDoc } from '@/lib/journal'
 import { generateDigest } from '@/lib/claude'
 import { sendDigestEmail } from '@/lib/email'
 import { isSubscriptionActive } from '@/lib/stripe'
@@ -64,6 +65,9 @@ export async function POST() {
       user.google_refresh_token,
       settings.folder_ids
     )
+
+    const journalDoc = await getJournalEntriesDoc(user.id)
+    if (journalDoc) docs.unshift(journalDoc)
 
     if (!docs.length) {
       return NextResponse.json({ error: 'No readable documents found in selected folders' }, { status: 400 })

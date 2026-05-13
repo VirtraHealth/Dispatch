@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { readDocsFromFolders } from '@/lib/google-drive'
+import { getJournalEntriesDoc } from '@/lib/journal'
 import { generateDigest } from '@/lib/claude'
 import { sendDigestEmail, sendContextNudgeEmail } from '@/lib/email'
 import { getUsersDueForDigest } from '@/lib/digest-scheduler'
@@ -36,6 +37,9 @@ export async function GET(req: NextRequest) {
           user.google_refresh_token,
           setting.folder_ids
         )
+
+        const journalDoc = await getJournalEntriesDoc(setting.user_id)
+        if (journalDoc) docs.unshift(journalDoc)
 
         if (!docs.length) {
           console.log(`[cron] No docs found for ${user.email}`)
