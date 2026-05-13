@@ -23,7 +23,7 @@ export default function DashboardPage() {
   // Journal
   const [journalText, setJournalText] = useState('')
   const [journalSaving, setJournalSaving] = useState(false)
-  const [journalSaved, setJournalSaved] = useState(false)
+  const [journalStatus, setJournalStatus] = useState<'idle' | 'saved' | 'error'>('idle')
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([])
 
   // Setup section — instructions inline editing
@@ -109,6 +109,7 @@ export default function DashboardPage() {
   async function saveJournalEntry() {
     if (!journalText.trim() || journalSaving) return
     setJournalSaving(true)
+    setJournalStatus('idle')
     try {
       const res = await fetch('/api/journal/entries', {
         method: 'POST',
@@ -119,9 +120,15 @@ export default function DashboardPage() {
         const { entry } = await res.json()
         setJournalEntries(prev => [entry, ...prev])
         setJournalText('')
-        setJournalSaved(true)
-        setTimeout(() => setJournalSaved(false), 2500)
+        setJournalStatus('saved')
+        setTimeout(() => setJournalStatus('idle'), 2500)
+      } else {
+        setJournalStatus('error')
+        setTimeout(() => setJournalStatus('idle'), 4000)
       }
+    } catch {
+      setJournalStatus('error')
+      setTimeout(() => setJournalStatus('idle'), 4000)
     } finally {
       setJournalSaving(false)
     }
@@ -306,7 +313,7 @@ export default function DashboardPage() {
           <h2 className="text-xs font-bold tracking-widest uppercase text-gray-400 font-sans mb-3">
             Write
           </h2>
-          <div className={`bg-white rounded-xl border transition-colors ${journalSaved ? 'border-green-200' : 'border-gray-100'}`}>
+          <div className={`bg-white rounded-xl border transition-colors ${journalStatus === 'saved' ? 'border-green-200' : journalStatus === 'error' ? 'border-red-200' : 'border-gray-100'}`}>
             <textarea
               value={journalText}
               onChange={e => setJournalText(e.target.value)}
@@ -316,12 +323,14 @@ export default function DashboardPage() {
               className="w-full px-5 pt-5 pb-3 text-sm font-sans text-gray-700 leading-relaxed focus:outline-none bg-transparent resize-none rounded-xl placeholder-gray-300"
             />
             <div className="flex items-center justify-between px-5 pb-4">
-              <span className="text-xs text-gray-300 font-sans">
-                {journalSaved
+              <span className="text-xs font-sans">
+                {journalStatus === 'saved'
                   ? <span className="text-green-500">Saved to your notes</span>
-                  : journalText.length > 0
-                    ? <span>⌘↵ to save</span>
-                    : 'Claude reads these with your digest'}
+                  : journalStatus === 'error'
+                    ? <span className="text-red-500">Couldn&apos;t save — try again</span>
+                    : journalText.length > 0
+                      ? <span className="text-gray-300">⌘↵ to save</span>
+                      : <span className="text-gray-300">Claude reads these with your digest</span>}
               </span>
               <button
                 onClick={saveJournalEntry}

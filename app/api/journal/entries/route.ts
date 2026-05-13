@@ -46,11 +46,16 @@ export async function POST(req: NextRequest) {
 
   if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 })
 
-  const { data: entry } = await supabaseAdmin
+  const { data: entry, error } = await supabaseAdmin
     .from('journal_entries')
     .insert({ user_id: user.id, content: content.trim() })
     .select()
     .single()
+
+  if (error) {
+    console.error('[journal] Insert failed:', error)
+    return NextResponse.json({ error: 'Failed to save entry' }, { status: 500 })
+  }
 
   return NextResponse.json({ entry })
 }
