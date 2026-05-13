@@ -125,7 +125,7 @@ export default function OnboardingPage() {
           <div>
             <h1 className="font-serif text-3xl text-ink mb-3">Where should it land?</h1>
             <p className="text-gray-500 text-base mb-6 font-sans leading-relaxed">
-              Your digest arrives every morning at 7 AM. Confirm where to send it.
+              Your digest arrives every morning at 8 AM Pacific. Confirm where to send it.
             </p>
 
             <div>

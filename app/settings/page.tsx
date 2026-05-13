@@ -169,9 +169,12 @@ export default function SettingsPage() {
 
           {/* Context */}
           <div>
-            <label className="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-2 font-sans">
+            <label className="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-1 font-sans">
               Your context
             </label>
+            <p className="text-xs text-gray-400 font-sans mb-2">
+              What you wrote during setup — update it anytime. Claude reads this every morning.
+            </p>
             <textarea
               value={onboardingContext}
               onChange={e => setOnboardingContext(e.target.value)}
@@ -179,9 +182,6 @@ export default function SettingsPage() {
               placeholder="What are you working on? What questions keep coming up? What do you want Claude to understand about you?"
               className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
             />
-            <p className="text-xs text-gray-400 font-sans mt-1">
-              Claude reads this every morning to personalize your digest.
-            </p>
           </div>
 
           {/* Save */}
