@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { FolderPicker } from '@/components/FolderPicker'
+import { FilePicker } from '@/components/FilePicker'
 import type { DriveFolder, UserSettings } from '@/types'
 
 
@@ -123,12 +123,12 @@ export default function SettingsPage() {
             </button>
           </div>
 
-          {/* Folders */}
+          {/* Documents */}
           <div>
             <label className="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-3 font-sans">
-              Writing folders
+              Writing documents
             </label>
-            <FolderPicker selected={selectedFolders} onChange={setSelectedFolders} max={3} />
+            <FilePicker selected={selectedFolders} onChange={setSelectedFolders} />
           </div>
 
           {/* Delivery email */}

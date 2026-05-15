@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { StepNav } from '@/components/StepNav'
-import { FolderPicker } from '@/components/FolderPicker'
+import { FilePicker } from '@/components/FilePicker'
 import type { DriveFolder } from '@/types'
 
-const STEP_LABELS = ['Choose folders', 'Delivery', 'Your context']
+const STEP_LABELS = ['Choose documents', 'Delivery', 'Your context']
 
 export default function OnboardingPage() {
   const { data: session, status } = useSession()
@@ -23,8 +23,6 @@ export default function OnboardingPage() {
   const [deliveryEmail, setDeliveryEmail] = useState('')
   const [onboardingContext, setOnboardingContext] = useState('')
   const [personalInstructions, setPersonalInstructions] = useState('')
-  const [foldersHaveContent, setFoldersHaveContent] = useState<boolean | null>(null)
-  const [checkingContent, setCheckingContent] = useState(false)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -35,21 +33,7 @@ export default function OnboardingPage() {
     }
   }, [status, session, router])
 
-  async function advanceFromFolders() {
-    setCheckingContent(true)
-    try {
-      const res = await fetch('/api/drive/check-content', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ folderIds: selectedFolders.map(f => f.id) }),
-      })
-      const data = await res.json()
-      setFoldersHaveContent(data.hasContent ?? true)
-    } catch {
-      setFoldersHaveContent(true)
-    } finally {
-      setCheckingContent(false)
-    }
+  function advanceFromFolders() {
     setStep(1)
   }
 
@@ -102,20 +86,20 @@ export default function OnboardingPage() {
 
         <StepNav currentStep={step} totalSteps={3} labels={STEP_LABELS} />
 
-        {/* Step 0: Choose folders */}
+        {/* Step 0: Choose documents */}
         {step === 0 && (
           <div>
-            <h1 className="font-serif text-3xl text-ink mb-3">Choose your writing folders</h1>
+            <h1 className="font-serif text-3xl text-ink mb-3">Choose your writing documents</h1>
             <p className="text-gray-500 text-base mb-6 font-sans leading-relaxed">
-              Select up to 3 folders containing your notes, journal entries, or docs. These are what My Daily Journal will read each morning.
+              Select the Google Docs or text files where you keep your notes and journal entries. My Daily Journal reads these every morning.
             </p>
-            <FolderPicker selected={selectedFolders} onChange={setSelectedFolders} max={3} />
+            <FilePicker selected={selectedFolders} onChange={setSelectedFolders} />
             <button
               onClick={advanceFromFolders}
-              disabled={selectedFolders.length === 0 || checkingContent}
+              disabled={selectedFolders.length === 0}
               className="mt-6 w-full bg-ink text-white rounded-xl py-3.5 text-sm font-semibold font-sans hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              {checkingContent ? 'Checking folders…' : 'Continue'}
+              Continue
             </button>
           </div>
         )}
@@ -168,33 +152,17 @@ export default function OnboardingPage() {
               <div>
                 <label className="block text-xs font-bold tracking-wider uppercase text-gray-500 mb-2 font-sans">
                   What are you working on right now?
-                  {foldersHaveContent === false && (
-                    <span className="ml-2 text-amber-500 normal-case font-normal tracking-normal">required — your folders appear empty</span>
-                  )}
                 </label>
                 <textarea
                   value={onboardingContext}
                   onChange={e => setOnboardingContext(e.target.value)}
                   rows={4}
                   placeholder="e.g. I'm building a B2B SaaS, wrestling with distribution vs. product. I journal about Stoicism and founder uncertainty."
-                  className={`w-full border rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none resize-none ${
-                    foldersHaveContent === false && onboardingContext.length > 0 && onboardingContext.length < 100
-                      ? 'border-amber-300 focus:border-amber-400'
-                      : 'border-gray-200 focus:border-indigo-400'
-                  }`}
+                  className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm font-sans leading-relaxed focus:outline-none focus:border-indigo-400 resize-none"
                 />
-                <div className="flex items-center justify-between mt-2">
-                  <p className="text-xs text-gray-400 font-sans">
-                    {foldersHaveContent === false
-                      ? 'Your folders are empty — tell Claude what you\'re thinking about so your first digest feels personal.'
-                      : 'Write freely — Claude uses this to understand what you care about most.'}
-                  </p>
-                  {foldersHaveContent === false && (
-                    <p className={`text-xs font-sans ml-4 flex-shrink-0 ${onboardingContext.length >= 100 ? 'text-green-500' : 'text-amber-500'}`}>
-                      {onboardingContext.length}/100
-                    </p>
-                  )}
-                </div>
+                <p className="text-xs text-gray-400 font-sans mt-2">
+                  Write freely — Claude uses this to understand what you care about most.
+                </p>
               </div>
 
               <div>
@@ -215,7 +183,7 @@ export default function OnboardingPage() {
 
             <button
               onClick={handleFinish}
-              disabled={loading || (foldersHaveContent === false && onboardingContext.length < 100)}
+              disabled={loading}
               className="mt-6 w-full bg-indigo-600 text-white rounded-xl py-3.5 text-sm font-semibold font-sans hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? 'Setting up your digest…' : 'Start my first digest'}

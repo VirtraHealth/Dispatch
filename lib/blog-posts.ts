@@ -143,6 +143,68 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'what-morning-pages-get-right',
+    title: 'What Morning Pages Get Right (And What They\'re Missing)',
+    seoTitle: 'Morning Pages: What Julia Cameron Got Right and What\'s Missing | My Daily Journal',
+    description: 'Morning pages changed how millions of people think about writing. But three pages into the void only solves half the problem. Here\'s the other half.',
+    date: '2026-05-10',
+    readingTime: 6,
+    ctaHref: '/',
+    ctaLabel: 'Try My Daily Journal free',
+    content: [
+      {
+        body: `Julia Cameron's morning pages practice is one of the most quietly influential ideas in the last thirty years of self-help. Three handwritten pages every morning, stream of consciousness, before the world starts. No editing. No audience. Just you and the page.\n\nMillions of people have done it. Many of them report genuine breakthroughs — creative unlocks, decisions clarified, anxiety that had no shape suddenly taking one. The practice works. There is something real happening when you sit down before the day has its hands on you and write without stopping for twenty minutes.\n\nBut morning pages have a structural problem that Cameron never solved — and it becomes more visible the longer you practice.`,
+      },
+      {
+        heading: 'What morning pages actually do',
+        body: `The mechanism behind morning pages is real and well-understood. Writing without editing bypasses the internal critic — the part of you that is already thinking about how what you say will be received. Stream-of-consciousness writing lets you find out what you actually think rather than what you think you're supposed to think.\n\nIt also creates a private space that almost nothing else does. You are not performing. You are not communicating. You are using language as a thinking tool in its rawest form.\n\nThese things matter. The habit of showing up to your own mind before the world shows up to you is not a small thing. Many people who practice morning pages describe the first twenty minutes of their day as the clearest thinking they do.`,
+      },
+      {
+        heading: 'The void problem',
+        body: `Here is what Cameron doesn't tell you: the pages go into a drawer.\n\nYou write. You move on. Three months later you are writing about the same thing — the same uncertainty about your work, the same unresolved tension with a relationship, the same question you keep circling without landing. Years of notebooks accumulate. The thinking happens. It just doesn't compound.\n\nThis is the void problem. Morning pages are excellent at output and poor at synthesis. They help you express what's already pressing on you. They don't help you see the pattern across six months of expression — the question underneath the question, the belief you keep challenging without quite naming it, the thing you've written around two hundred times without looking at directly.\n\nFor that, you need something that reads what you wrote.`,
+      },
+      {
+        heading: 'What a response would change',
+        body: `Imagine if your pages wrote back.\n\nNot a summary. Not a reflection of what you said. A genuine intellectual response — from something that had read every page you'd written, noticed the thread running through it, and came back with the observation you couldn't make from inside your own material.\n\nThis is what My Daily Journal is built to do. Connect your writing folders — your morning pages documents, your notes, your journals in progress — and each morning receive a digest that has read everything and responds to what you're actually wrestling with. It names the pattern. It finds the live question in your writing. It points to thinkers and ideas that connect to what you're working through. It asks the questions worth sitting with for days.\n\nThe practice stays exactly the same. You still write your pages. You still keep them private. But the monologue closes into a correspondence.`,
+      },
+      {
+        heading: 'The missing half',
+        body: `Cameron understood that writing is a thinking tool. What she didn't build was the other side of the conversation.\n\nThe most useful thinking partners — therapists, great editors, brilliant friends — do something specific: they read your material before the conversation. They come having thought about it. They notice what you couldn't see from inside. They don't add noise. They find the signal you were already generating and reflect it back more clearly than you could see it yourself.\n\nMorning pages create the signal. The question is whether anything is listening.\n\nNow something is.`,
+      },
+    ],
+  },
+  {
+    slug: 'the-note-taking-trap',
+    title: 'The Note-Taking Trap',
+    seoTitle: 'Why Your Notes Aren\'t Making You Smarter | My Daily Journal',
+    description: 'You\'ve been taking notes for years. Highlights, voice memos, docs full of ideas. But notes that sit unread don\'t compound into insight. Here\'s the system that changes that.',
+    date: '2026-05-13',
+    readingTime: 5,
+    ctaHref: '/',
+    ctaLabel: 'Start building from your notes',
+    content: [
+      {
+        body: `Most serious note-takers have the same uncomfortable feeling after a few years: you have thousands of notes and you're not sure you're smarter for it. You remember taking the note. You can search for the note. The idea in the note just hasn't become part of how you think.\n\nThis is the note-taking trap. It feels like learning. It produces the artifacts of learning. But the accumulation of captures is not the same as the development of understanding — and eventually, if you're honest, you start to notice the difference.`,
+      },
+      {
+        heading: 'What notes actually are',
+        body: `Notes are inputs. They are raw material. They are not, by themselves, understanding.\n\nThe difference between collecting ideas and internalizing them is the difference between having a library and having read it — or more precisely, having read it and argued with it, connected it to what you already believed, found where it confirmed something and where it created a problem for something else you held to be true.\n\nNiklas Luhmann built the Zettelkasten precisely because he understood this. His elaborate card system forced him to do something with every note he took: connect it to existing notes, trace the implication, write the link. He didn't store ideas. He put them in conversation with each other. He produced 70 books and credited the system. But the Zettelkasten is also exhausting to maintain — which is why most people who start one don't finish it.`,
+      },
+      {
+        heading: 'The gap nobody talks about',
+        body: `The gap between "took a note" and "this changed how I think" is filled by one thing: active engagement with the material across time.\n\nRe-reading it. Arguing with it. Noticing when it connects to something you learned last week. Noticing when it contradicts something you believed last month. Finding the question it opens rather than just the answer it offers.\n\nThis kind of engagement is cognitively expensive. It requires you to hold multiple things in working memory simultaneously — what you just read, what you read before, what you currently believe — and do something with the tension between them. It is also, not coincidentally, exactly what's missing from most note-taking workflows.\n\nHighlighting is easy. Saving is easy. The expensive part is synthesis. And most tools don't help with synthesis at all.`,
+      },
+      {
+        heading: 'What daily synthesis looks like',
+        body: `My Daily Journal takes a different approach to the problem. Connect your writing folders — your book notes, your reading journals, your thinking-out-loud documents — and each morning it reads across everything and sends you a digest that does the synthesis you don't have time to do.\n\nIt finds the thread running through your last week of reading. It connects your note from last Tuesday with something you wrote three months ago that turns out to matter now. It names what you're actually grappling with intellectually — not just what you've encountered — and points to thinkers, books, and ideas that connect directly to your own questions.\n\nThen it asks you to figure out what you actually think. Not to summarize the material. To take a position. To notice where you agree and where you don't and why.\n\nThat friction is where understanding happens.`,
+      },
+      {
+        heading: 'Notes as the beginning, not the end',
+        body: `The note-taking trap closes when you stop treating notes as the end of the process and start treating them as the beginning of a conversation.\n\nWrite the note. Save the highlight. Keep the voice memo. But know that those captures are raw material — and that raw material only becomes something if something engages with it, finds the pattern in it, pushes back on it, asks what it means.\n\nYour notes are smarter than you think. They contain the outline of a perspective you've been slowly building for years. The question is whether anything is reading them carefully enough to show you what it is.\n\nEvery morning, something does.`,
+      },
+    ],
+  },
 ]
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
