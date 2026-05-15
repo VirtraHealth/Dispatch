@@ -20,6 +20,12 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
 
   const openPicker = useCallback(async () => {
     setError('')
+
+    if (!process.env.NEXT_PUBLIC_GOOGLE_API_KEY) {
+      setError('Google API key not configured. Add NEXT_PUBLIC_GOOGLE_API_KEY to your Vercel environment variables.')
+      return
+    }
+
     setLoading(true)
     try {
       const tokenRes = await fetch('/api/auth/google-token')
@@ -80,6 +86,15 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               <span className="text-sm text-gray-700 font-sans flex-1 truncate">{file.name}</span>
+              <a
+                href={`https://drive.google.com/open?id=${file.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-gray-400 hover:text-indigo-500 font-sans flex-shrink-0 transition-colors"
+                title="Open in Google Drive"
+              >
+                Open ↗
+              </a>
               <button
                 onClick={() => remove(file.id)}
                 className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0"
