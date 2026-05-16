@@ -20,12 +20,6 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
 
   const openPicker = useCallback(async () => {
     setError('')
-
-    if (!process.env.NEXT_PUBLIC_GOOGLE_API_KEY) {
-      setError('Google API key not configured. Add NEXT_PUBLIC_GOOGLE_API_KEY to your Vercel environment variables.')
-      return
-    }
-
     setLoading(true)
     try {
       const tokenRes = await fetch('/api/auth/google-token')
@@ -53,7 +47,6 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
       new google.picker.PickerBuilder()
         .addView(view)
         .setOAuthToken(accessToken)
-        .setDeveloperKey(process.env.NEXT_PUBLIC_GOOGLE_API_KEY)
         .setCallback((data: { action: string; docs?: Array<{ id: string; name: string }> }) => {
           if (data.action === google.picker.Action.PICKED && data.docs) {
             const newFiles = data.docs
