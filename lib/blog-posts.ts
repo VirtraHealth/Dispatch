@@ -206,6 +206,77 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
   },
   {
+    slug: 'how-to-start-journaling-and-actually-stick-with-it',
+    title: 'How to Start Journaling and Actually Stick With It',
+    seoTitle: 'How to Start Journaling and Actually Stick With It | My Daily Journal',
+    description: 'Most journaling advice tells you to write every day and see what happens. That is not enough. Here is a system that builds the habit, makes the writing useful, and gives you something back.',
+    date: '2026-05-16',
+    readingTime: 7,
+    ctaHref: '/',
+    ctaLabel: 'Start journaling with My Daily Journal — free',
+    content: [
+      {
+        body: `Journaling is one of those habits that everyone knows they should have and almost nobody keeps.\n\nYou buy the notebook. You open the app. You write for three days in a row and feel great about it. Then life gets busy, you miss a day, and the streak breaks. The notebook goes in a drawer. The app gets buried in a folder. Six months later you find it, feel vaguely guilty, and the cycle starts again.\n\nIf this has happened to you more than once, the problem is not your discipline. The problem is that nobody told you what journaling is actually for — and because you didn't know what it was for, you didn't know when it was working.`,
+      },
+      {
+        heading: 'What journaling is actually for',
+        body: `Journaling is not a productivity tool. It is not a record-keeping system. It is not a diary in the Victorian sense — a log of events for posterity.\n\nJournaling is a thinking tool. The purpose is to use language to figure out what you actually think, feel, and want — things that stay fuzzy and unresolved when they live only in your head.\n\nThis reframe matters because it changes what "success" looks like. A journaling session is successful not when you fill three pages, but when you leave with more clarity than you arrived with. Sometimes that takes three sentences. Sometimes it takes three pages. The length is irrelevant. The clarity is everything.\n\nOnce you understand that, the blank page stops being intimidating. You don't need to produce something. You need to think something through.`,
+      },
+      {
+        heading: 'The three questions that always work',
+        body: `If you don't know what to write, start with one of these:\n\n**What's actually on my mind right now?** Not the polished version — the real version. What is the thing underneath the thing? Write that.\n\n**What am I avoiding?** There is always something. The thought you keep circling, the decision you keep postponing, the conversation you haven't had. Write about that.\n\n**What do I want to be true a year from now?** Not goals in the productivity sense. Actual life. What does good look like? Write that.\n\nAny one of these will produce something useful. Combined over weeks and months, they produce a picture of who you are and what you actually care about — a picture you can't get any other way.`,
+      },
+      {
+        heading: 'Why consistency matters less than you think',
+        body: `The journaling advice industry is obsessed with streaks. Write every day. Never miss. Three pages minimum. Morning only.\n\nThis is mostly wrong.\n\nThe research on habit formation is clear that what matters is not frequency — it is regularity. A consistent weekly practice builds a stronger habit than a daily practice that keeps breaking. And a practice you actually do three times a week is infinitely more valuable than a perfect daily practice that you abandon by week two.\n\nIf daily feels too hard, start with every other day. If every other day is still too much, start with once a week. Do that until it feels easy, then add. The direction matters more than the speed.`,
+      },
+      {
+        heading: 'The missing piece: something that writes back',
+        body: `Here is the structural problem that most journaling tools never solve: you write into a void.\n\nYou pour your thinking onto the page — your questions, your worries, your half-formed ideas — and nothing happens. The journal stores it faithfully. And then tomorrow you face the blank page again, with no connection to what you wrote yesterday, no sense of whether you're going in circles or slowly arriving somewhere.\n\nThis is why people quit. Not because they lack discipline. Because the practice doesn't give enough back.\n\nMy Daily Journal is built to close this loop. Connect your writing folders — wherever you already journal, whether that's Google Docs, a text file, or anything else — and every morning you get a digest that has read everything you've written and responds to it thoughtfully.\n\nIt finds the thread running through your recent entries. It names the question you keep circling. It points to thinkers and ideas that connect directly to what you're wrestling with. It asks you questions worth sitting with.\n\nThe journal stops being a monologue. It becomes a conversation. And conversations, unlike monologues, are worth showing up for.`,
+      },
+      {
+        heading: 'How to start today',
+        body: `Here is the simplest possible version of the practice:\n\n1. Open a Google Doc (or any document). Title it with today's date.\n2. Write for ten minutes without stopping. Don't edit. Don't reread. Just write.\n3. Connect that doc to My Daily Journal.\n4. Tomorrow morning, read what comes back before you open anything else.\n\nThat's it. Ten minutes of writing, a few minutes of reading what your own thinking produced at depth. The habit builds from there.\n\nThe people who stick with journaling long-term are not more disciplined than the people who quit. They found a way to make the practice give something back. That's what we built.\n\nYour first digest is free. Start there.`,
+      },
+    ],
+  },
+  {
+    slug: 'how-to-use-ai-to-think-more-clearly-every-day',
+    title: 'How to Use AI to Think More Clearly Every Day',
+    seoTitle: 'How to Use AI to Think More Clearly Every Day | My Daily Journal',
+    description: 'Most people use AI to do tasks faster. The more valuable use is using AI to think better — to go deeper into your own questions rather than outsourcing them. Here is how to build that practice.',
+    date: '2026-05-16',
+    readingTime: 8,
+    persona: 'thinkers',
+    ctaHref: '/',
+    ctaLabel: 'Try My Daily Journal free — your AI thinking partner',
+    content: [
+      {
+        body: `Everyone is using AI to do things faster. Write emails faster, summarize documents faster, generate code faster. The tools are genuinely useful for this. But productivity speed-up is the least interesting thing AI can do for you.\n\nThe more valuable question is: can AI make you think better?\n\nNot faster. Better. Deeper. More clearly. With fewer blind spots and more honest engagement with your own ideas.\n\nThe answer is yes — but only if you use it in a specific way. And almost nobody is using it that way.`,
+      },
+      {
+        heading: 'The wrong way to use AI for thinking',
+        body: `The wrong way is to ask AI what to think.\n\nThis is extremely common. You have a decision to make, a problem to solve, an idea you're uncertain about — so you ask the AI. It gives you a confident, well-structured answer. You feel like you've done the thinking. You move on.\n\nBut you haven't done the thinking. You've outsourced it. And outsourced thinking doesn't compound — it doesn't connect to what you already know, it doesn't update your beliefs, it doesn't become part of how you see the world.\n\nWorse: AI is very good at producing confident-sounding answers that paper over genuine uncertainty. If you're not careful, you end up more certain and less accurate than when you started.`,
+      },
+      {
+        heading: 'The right way: AI as an interlocutor, not an oracle',
+        body: `The right way to use AI for thinking is to bring your own material and have it push back.\n\nNot "tell me what to think about X." But: "Here is what I currently think about X — here are my assumptions, here is my reasoning, here is where I feel uncertain. What am I missing? What would someone who disagreed say? What question am I not asking?"\n\nThis is the difference between an oracle and an interlocutor. An oracle tells you the answer. An interlocutor engages with your thinking and makes it better. The oracle creates dependency. The interlocutor creates capability.\n\nUsed as an interlocutor, AI becomes one of the best thinking tools ever built. Used as an oracle, it slowly erodes your ability to think for yourself.`,
+      },
+      {
+        heading: 'Why writing is the foundation',
+        body: `For AI to work as an interlocutor, you need to bring something. You need material — your actual thinking, not a vague impression of it.\n\nThis is why writing is the foundation of using AI well. When you write, you compress your vague intuitions into actual claims. You discover where your reasoning is solid and where it has holes. You produce something concrete that an AI can actually engage with, rather than something so fuzzy that any answer will seem relevant.\n\nPeople who journal — who write regularly about what they're thinking and experiencing — have a massive advantage when using AI. They have material. They know what they actually believe. The AI can do something specific with that.\n\nPeople who don't journal are asking AI to engage with a fog. The results are correspondingly foggy.`,
+      },
+      {
+        heading: 'What a daily AI thinking practice looks like',
+        body: `Here is the system that actually works:\n\n**Write first.** Every morning, before you open your inbox or consume anything, spend ten to twenty minutes writing. What's on your mind. What you're wrestling with. What you're trying to figure out. Don't edit. Don't perform. Write the real version.\n\n**Let AI read everything you've written.** Not just today's entry — all of it. The patterns, the recurring themes, the questions you keep returning to. A single entry is a data point. Weeks of entries are a portrait.\n\n**Read what comes back before you start your day.** Not as instructions. As a thinking partner who has read your material and has something to offer. Engage with it. Argue with it. Let it push your thinking somewhere you wouldn't have gone alone.\n\nThis is exactly what My Daily Journal is built to do. Connect your writing folders — Google Docs, text files, anything — and each morning it reads everything, synthesizes the threads, does further research on what you're curious about, and delivers a personal briefing to your inbox before the day starts.\n\nThe result is not a productivity hack. It is a genuine upgrade to the quality of your thinking over time.`,
+      },
+      {
+        heading: 'The compounding effect',
+        body: `Thinking well is a skill, and like all skills it compounds.\n\nA month of daily writing and AI-assisted reflection doesn't just mean you've thought about thirty things. It means your thinking about thing thirty is informed by everything you've thought about before. You have a richer context. You notice more. You catch yourself making assumptions earlier. You ask better questions.\n\nThis is the version of AI integration that actually matters for your life — not doing tasks ten percent faster, but thinking ten percent more clearly every week, compounding over months and years.\n\nMy Daily Journal is free to start. Connect your writing, set up your context, and read your first digest tomorrow morning. That's the whole onboarding. Everything builds from there.`,
+      },
+    ],
+  },
+  {
     slug: 'you-dont-need-more-information',
     title: "You Don't Need More Information. You Need to Remember What You Already Know.",
     seoTitle: "You Don't Need More Information — Remember What You Know | My Daily Journal",
