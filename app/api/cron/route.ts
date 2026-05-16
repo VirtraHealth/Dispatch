@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
-import { readSelectedDocs } from '@/lib/google-drive'
+import { readDocsFromFolders } from '@/lib/google-drive'
 import { getJournalEntriesDoc } from '@/lib/journal'
 import { generateDigest } from '@/lib/claude'
 import { sendDigestEmail, sendContextNudgeEmail } from '@/lib/email'
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
       })
 
       try {
-        const docs = await readSelectedDocs(
+        const docs = await readDocsFromFolders(
           user.google_access_token,
           user.google_refresh_token,
           setting.folder_ids
