@@ -205,6 +205,77 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: 'you-dont-need-more-information',
+    title: "You Don't Need More Information. You Need to Remember What You Already Know.",
+    seoTitle: "You Don't Need More Information — Remember What You Know | My Daily Journal",
+    description: 'In a world of infinite content, the most valuable thing you can do isn\'t consume more. It\'s reconnect with what you\'ve already figured out. Alex Hormozi put it plainly: we need to be reminded more than we need to be taught.',
+    date: '2026-05-15',
+    readingTime: 6,
+    persona: 'thinkers',
+    ctaHref: '/',
+    ctaLabel: 'Start reconnecting with your own wisdom',
+    content: [
+      {
+        body: `Alex Hormozi said something on the Modern Wisdom podcast that stopped me cold: "We need to be reminded more than we need to be taught."\n\nIt's one of those sentences that feels obvious after you hear it and completely invisible before. Of course. Of course that's what's happening. You already know most of what you need to know. The problem isn't a gap in your information. It's a gap in your attention to what you've already figured out.`,
+      },
+      {
+        heading: 'The information paradox',
+        body: `We live in the most information-rich moment in human history. There are more books, more podcasts, more long-form essays, more YouTube lectures, more expert breakdowns of every conceivable topic than any single person could consume in a thousand lifetimes.\n\nAnd somehow, despite all of this, most people feel less certain about things than they did before the internet. Not more certain. Less.\n\nThis isn't a coincidence. When information is infinite, the signal-to-noise ratio collapses. Every piece of advice has an equally confident counterpiece. Every framework has a critic with good arguments. You watch two hours of content hoping to grab a secret nugget, and you walk away not with a nugget but with five new questions and a vague sense that someone, somewhere, knows something you don't.\n\nThe conventional truths — the ones that have survived for decades, centuries, across cultures — start to feel less trustworthy than the latest take from someone with a microphone and a good thumbnail.`,
+      },
+      {
+        heading: 'What conventional truths actually are',
+        body: `Conventional wisdom gets a bad reputation. We are trained, especially in certain intellectual circles, to treat it as the thing to be questioned, the lazy assumption, the received opinion that hasn't been examined.\n\nSometimes that's right. But most of the time, conventional wisdom is conventional because it's true. It has survived long enough to become the default because it keeps surviving contact with reality. Sleep matters. Relationships matter. Consistency beats intensity. Character compounds. These things remain regardless of what the current content cycle is interested in.\n\nThe truths that have been around for a long time are not there because no one bothered to challenge them. They are there because they have been challenged and they held.`,
+      },
+      {
+        heading: 'Your own accumulated wisdom',
+        body: `Here is the part that gets missed in most conversations about learning and growth: you have accumulated a significant amount of wisdom already. Not from podcasts — from living. From the things you've tried and seen fail. From the relationships you've watched closely enough to understand. From the beliefs you held, tested against reality, and either deepened or discarded.\n\nThat wisdom is sitting in your notebooks, your journals, your late-night voice memos, your half-finished documents. It is scattered and unorganized and mostly unread. But it is yours, and it is real, and it is more relevant to your actual life than anything a stranger with a camera could tell you.\n\nRe-aligning with your own wisdom — going deeper into what you already believe rather than wider into what others claim — is more powerful than any amount of new input. Not because new input is bad. But because new input without a strong foundation just adds to the noise.`,
+      },
+      {
+        heading: 'What reminding yourself actually looks like',
+        body: `I took this seriously and built something around it. I created a project in Google Drive where I keep everything: my journal entries, my writing, my half-formed ideas, the books that have mattered to me, the questions I keep returning to. Then I connected it to an AI that reads all of it — understands the texture of how I think, what I care about, what I'm currently wrestling with — and does further research on the threads I've already been pulling.\n\nEvery morning, before I open anything else, I get an email. Not a news briefing. Not a productivity summary. A response to my own thinking — deeper into my curious questions, not outward into new ones.\n\nThe difference is significant. Instead of starting the day by consuming something from outside, I start by going further inside what I already know. The day begins from a place of alignment rather than accumulation.\n\nThat's what Hormozi was pointing at, I think. The reminder isn't about nostalgia or repetition. It's about depth. You already have a foundation. The question is whether you're building on it or constantly pouring new concrete next to it and wondering why nothing stands.`,
+      },
+      {
+        heading: 'Try it',
+        body: `If this resonates, the practice is simple. Find everything you've written over the last few years — journal entries, notes, documents, anything — and put it somewhere you can actually access. Then spend time with it. Not to organize it. To read it. To notice what keeps showing up. To notice what you believed two years ago and what you believe now and where those things are different.\n\nYou will be surprised by how much you already know. And how rarely you remember to use it.\n\nIf you want the AI layer — something that reads your material and sends you a morning dispatch that goes deeper into what you're already thinking — that's exactly what My Daily Journal is built to do. Add your context, put your past journal entries in, and start diving deeper into yourself.\n\nThe information you need is mostly already there. It's just waiting to be remembered.`,
+      },
+    ],
+  },
+  {
+    slug: 'i-built-an-ai-that-reads-my-journals',
+    title: 'I Built an AI That Reads My Journals and Sends Me a Morning Briefing',
+    seoTitle: 'I Built an AI That Reads My Journals Every Morning | My Daily Journal',
+    description: 'I made this for myself. Every morning, an AI reads everything I\'ve written — my journal, my notes, my ideas — and sends me a briefing that goes deeper into what I\'m already thinking. Then I decided other people might want it too.',
+    date: '2026-05-15',
+    readingTime: 7,
+    ctaHref: '/',
+    ctaLabel: 'Make an account at mydailyjournal.net',
+    content: [
+      {
+        body: `I built this for myself. That's the honest version of the story.\n\nI wasn't trying to start a company. I was trying to solve a problem I had: I'd been journaling for years, accumulating notebooks and documents and voice memos and half-finished essays, and I felt like none of it was compounding. I'd write something true on a Thursday, forget it by the following week, and spend the next three months slowly re-figuring out the same thing.\n\nI also noticed I was consuming a lot — podcasts, long-form articles, YouTube lectures — and the consumption wasn't making me think more clearly. If anything, it was making me think less clearly. More inputs, less certainty.`,
+      },
+      {
+        heading: 'The Hormozi reminder',
+        body: `Alex Hormozi said something on the Modern Wisdom podcast that reframed the problem for me: "We need to be reminded more than we need to be taught."\n\nThat landed. I had years of writing — things I'd actually figured out through living, not through watching clips — and I was mostly ignoring it in favor of new inputs. I was treating my own accumulated thinking as an archive when I should have been treating it as a foundation.\n\nSo I asked a different question. Instead of "what should I consume today?" — what if something read what I'd already written and helped me go deeper into that?`,
+      },
+      {
+        heading: 'What I built',
+        body: `The setup is straightforward. I created a project folder in Google Drive — my journal, my inspiration, my writing, things I'm interested in, questions I keep returning to. I put everything in there. Past journal entries going back years. Notes from books. Voice memo transcripts. The essay I've been writing in pieces for two years.\n\nThen I built an AI app that connects to that folder. It reads everything — understands me, tracks what I've been writing and thinking about — and does further research on the threads I've already been pulling. Not new threads. Mine.\n\nThat research gets delivered to me in an email, first thing in the morning. Before I open anything else, before the day starts making demands, I get a briefing that goes deeper into my own curious questions.\n\nThe effect was immediate. I stopped starting my days from zero. I started starting from somewhere — from my own foundation, pushed further than I could push it alone.`,
+      },
+      {
+        heading: 'Why this beats two hours of YouTube',
+        body: `I'm not anti-content. There are podcasts and books and essays that have genuinely changed how I see things. But there's a meaningful difference between input that builds on what you already believe and input that scatters your attention across things you don't.\n\nWhen the AI reads my journals, it knows what I care about. It knows what I'm currently wrestling with. It knows what I believed six months ago and can see where that's shifted. So when it does further research, it's research in service of my questions, not generic interesting things that may or may not be relevant to my actual life.\n\nThe conventional wisdom that keeps coming up in my writing — the things I return to regardless of what else I'm reading — that stuff gets reinforced and deepened. The noise stays out.\n\nRe-aligning with your own wisdom and growing deeper into that is more powerful than grabbing at someone else's secret nugget. I believe this now. The morning briefing is why.`,
+      },
+      {
+        heading: 'I decided to share it',
+        body: `After a few months of using this myself, I started telling people about it. The description — "an AI reads my journals and sends me a morning email" — landed differently depending on the person. Some people got it immediately. Others thought it sounded strange. The ones who got it immediately all had the same follow-up question: can I use it?\n\nSo I published it. The website is mydailyjournal.net.\n\nMake an account. Add as much context as possible — the more you put in, the more specific and useful the morning briefings become. Put your past journal entries in there. Start diving deeper into yourself.\n\nIf you want a free account forever, reply to this with your email and I'll change your status to complimentary. I mean that. I made this because I needed it, and I published it because other people might too. I'm not trying to trick anyone into a subscription. I want you to actually use it.`,
+      },
+      {
+        heading: 'The one thing',
+        body: `If you take nothing else from this: you have probably accumulated more wisdom than you realize. It's sitting in your journals, your notes, your old documents — unread, underused, waiting.\n\nBefore you watch another two hours of content hoping for a nugget, spend twenty minutes with what you've already written. Notice what keeps coming up. Notice what you keep circling. Notice what you already know.\n\nThen build from there.\n\nThe app helps with that. But the instinct — to go deeper rather than wider — that's available to you right now.`,
+      },
+    ],
+  },
 ]
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
