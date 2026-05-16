@@ -105,6 +105,28 @@ export async function GET() {
       : 0
   }
 
+  // Nudge metrics
+  const { data: nudgeRecords } = await supabaseAdmin
+    .from('digests')
+    .select('user_id, sent_at')
+    .eq('status', 'nudge')
+
+  const nudgesTotal = (nudgeRecords || []).length
+  const nudgesLast7Days = (nudgeRecords || []).filter(n => n.sent_at >= sevenDaysAgo).length
+
+  // Nudge → first real digest conversion
+  const nudgedUserIds = new Set((nudgeRecords || []).map(n => n.user_id))
+  const { data: postNudgeDigests } = await supabaseAdmin
+    .from('digests')
+    .select('user_id')
+    .eq('status', 'sent')
+    .in('user_id', Array.from(nudgedUserIds))
+
+  const convertedFromNudge = new Set((postNudgeDigests || []).map(d => d.user_id)).size
+  const nudgeConversionRate = nudgedUserIds.size > 0
+    ? (convertedFromNudge / nudgedUserIds.size) * 100
+    : 0
+
   // Cost Per Email: avg cost over last 30 days
   const { data: recentDigests } = await supabaseAdmin
     .from('digests')
@@ -139,6 +161,12 @@ export async function GET() {
       freeToPaidConversion,
       monthlyChurn,
       costPerEmail,
+    },
+    nudges: {
+      total: nudgesTotal,
+      last7Days: nudgesLast7Days,
+      convertedCount: convertedFromNudge,
+      conversionRate: nudgeConversionRate,
     },
   })
 }

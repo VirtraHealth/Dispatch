@@ -18,6 +18,12 @@ type MetricsData = {
     monthlyChurn: number
     costPerEmail: number
   }
+  nudges: {
+    total: number
+    last7Days: number
+    convertedCount: number
+    conversionRate: number
+  }
 }
 
 type TrafficLight = 'green' | 'amber' | 'red'
@@ -175,6 +181,32 @@ export default function AdminMetricsPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Nudge section */}
+      <div className="mt-8 mb-3">
+        <h2 className="font-sans text-xs font-bold tracking-widest uppercase text-gray-400">
+          Context Nudge Emails
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {[
+          { label: 'Total Sent', value: data.nudges.total },
+          { label: 'Last 7 Days', value: data.nudges.last7Days },
+          { label: 'Converted to Digest', value: data.nudges.convertedCount },
+          {
+            label: 'Nudge → Digest Rate',
+            value: `${data.nudges.conversionRate.toFixed(1)}%`,
+            sub: 'nudged users who got a real digest',
+          },
+        ].map(s => (
+          <div key={s.label} className="bg-white rounded-xl p-5 border border-gray-100">
+            <div className="text-2xl font-serif text-ink mb-1">{s.value}</div>
+            <div className="text-xs text-gray-400 font-sans uppercase tracking-wider">{s.label}</div>
+            {s.sub && <div className="text-xs text-gray-300 font-sans mt-1">{s.sub}</div>}
+          </div>
+        ))}
       </div>
     </div>
   )
