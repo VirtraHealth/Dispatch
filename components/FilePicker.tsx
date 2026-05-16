@@ -40,19 +40,20 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
 
       const currentSelected = selected
 
-      const view = new google.picker.DocsView(google.picker.ViewId.DOCS)
-        .setMimeTypes('application/vnd.google-apps.document,text/plain')
+      const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS)
+        .setSelectFolderEnabled(true)
         .setMode(google.picker.DocsViewMode.LIST)
 
       new google.picker.PickerBuilder()
         .addView(view)
         .setOAuthToken(accessToken)
+        .setTitle('Select a Google Drive folder')
         .setCallback((data: { action: string; docs?: Array<{ id: string; name: string }> }) => {
           if (data.action === google.picker.Action.PICKED && data.docs) {
-            const newFiles = data.docs
+            const newFolders = data.docs
               .filter(doc => !currentSelected.some(s => s.id === doc.id))
               .map(doc => ({ id: doc.id, name: doc.name, parentId: null }))
-            onChange([...currentSelected, ...newFiles].slice(0, max))
+            onChange([...currentSelected, ...newFolders].slice(0, max))
           }
         })
         .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
@@ -76,7 +77,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
           {selected.map(file => (
             <div key={file.id} className="flex items-center gap-3 px-4 py-3 bg-white rounded-lg border border-gray-200">
               <svg className="w-4 h-4 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
               </svg>
               <span className="text-sm text-gray-700 font-sans flex-1 truncate">{file.name}</span>
               <a
@@ -118,7 +119,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              {selected.length === 0 ? 'Choose documents from Google Drive' : 'Add more documents'}
+              {selected.length === 0 ? 'Choose a folder from Google Drive' : 'Add another folder'}
             </>
           )}
         </button>
@@ -127,7 +128,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
       {error && <p className="mt-2 text-sm text-red-500 font-sans">{error}</p>}
 
       <p className="mt-3 text-xs text-gray-400 font-sans">
-        Select the Google Docs or text files you journal in. Claude reads these every morning.
+        Select a Google Drive folder. Claude reads every doc inside it each morning — just keep adding files to the folder.
       </p>
     </div>
   )
