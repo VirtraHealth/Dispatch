@@ -133,8 +133,10 @@ export async function POST() {
     })
 
     return NextResponse.json({ success: true, digest })
-  } catch (e) {
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : 'Failed to generate digest'
+    const isDriveAuth = msg.startsWith('DRIVE_AUTH_ERROR')
     console.error('Digest generation failed:', e)
-    return NextResponse.json({ error: 'Failed to generate digest' }, { status: 500 })
+    return NextResponse.json({ error: isDriveAuth ? msg.replace('DRIVE_AUTH_ERROR: ', '') : 'Failed to generate digest' }, { status: isDriveAuth ? 401 : 500 })
   }
 }

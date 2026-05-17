@@ -133,7 +133,11 @@ async function collectDocIds(
         })
       }
     }
-  } catch (e) {
+  } catch (e: unknown) {
+    const status = (e as { code?: number; status?: number })?.code ?? (e as { code?: number; status?: number })?.status
+    if (status === 401 || status === 403) {
+      throw new Error(`DRIVE_AUTH_ERROR: Google Drive access was denied for folder ${folderId}. Please sign out and sign back in to reconnect Google Drive.`)
+    }
     console.error(`[drive] failed listing folder ${folderId}:`, e)
   }
 
