@@ -53,7 +53,7 @@ export default function LandingPage() {
         </span>
         <div className="flex items-center gap-6">
           <Link href="/blog" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
-            Blog
+            Info
           </Link>
           <Link href="/newsletter" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
             Newsletter

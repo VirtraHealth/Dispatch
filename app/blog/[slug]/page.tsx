@@ -59,7 +59,7 @@ export default function BlogPostPage({ params }: Props) {
             My Daily Journal
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/blog" className="text-sm text-gray-500 hover:text-gray-800 font-sans transition-colors">Blog</Link>
+            <Link href="/blog" className="text-sm text-gray-500 hover:text-gray-800 font-sans transition-colors">Info</Link>
             <Link href="/newsletter" className="text-sm text-gray-500 hover:text-gray-800 font-sans transition-colors">Newsletter</Link>
             <Link href="/" className="text-sm bg-ink text-white px-4 py-2 rounded-lg font-sans font-semibold hover:bg-gray-800 transition-colors">
               Try it free

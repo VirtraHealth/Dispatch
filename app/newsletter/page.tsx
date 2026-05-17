@@ -23,7 +23,7 @@ export default async function NewsletterPage() {
             My Daily Journal
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/blog" className="text-sm text-gray-500 hover:text-gray-800 font-sans transition-colors">Blog</Link>
+            <Link href="/blog" className="text-sm text-gray-500 hover:text-gray-800 font-sans transition-colors">Info</Link>
             <Link href="/newsletter" className="text-sm text-gray-800 font-sans font-semibold transition-colors">Newsletter</Link>
             <Link href="/" className="text-sm bg-ink text-white px-4 py-2 rounded-lg font-sans font-semibold hover:bg-gray-800 transition-colors">
               Try it free
@@ -90,7 +90,7 @@ export default async function NewsletterPage() {
         <div className="max-w-3xl mx-auto px-6 py-8 flex items-center justify-between">
           <span className="text-xs text-gray-400 font-sans">© 2025 My Daily Journal</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Blog</Link>
+            <Link href="/blog" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Info</Link>
             <Link href="/privacy" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Privacy</Link>
             <Link href="/terms" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Terms</Link>
           </div>
