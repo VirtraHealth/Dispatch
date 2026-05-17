@@ -99,6 +99,47 @@ export async function readSelectedDocs(
   return docs
 }
 
+async function collectDocIds(
+  drive: ReturnType<typeof google.drive>,
+  folderId: string,
+  depth = 0
+): Promise<Array<{ id: string; name: string; modifiedTime: string; mimeType: string }>> {
+  if (depth > 3) return []
+  const files: Array<{ id: string; name: string; modifiedTime: string; mimeType: string }> = []
+
+  try {
+    const res = await drive.files.list({
+      q: `'${folderId}' in parents and trashed=false`,
+      fields: 'files(id, name, modifiedTime, mimeType)',
+      orderBy: 'modifiedTime desc',
+      pageSize: 50,
+      supportsAllDrives: true,
+      includeItemsFromAllDrives: true,
+    })
+
+    for (const f of res.data.files || []) {
+      if (f.mimeType === 'application/vnd.google-apps.folder') {
+        const nested = await collectDocIds(drive, f.id!, depth + 1)
+        files.push(...nested)
+      } else if (
+        f.mimeType === 'application/vnd.google-apps.document' ||
+        f.mimeType === 'text/plain'
+      ) {
+        files.push({
+          id: f.id!,
+          name: f.name!,
+          modifiedTime: f.modifiedTime!,
+          mimeType: f.mimeType!,
+        })
+      }
+    }
+  } catch (e) {
+    console.error(`[drive] failed listing folder ${folderId}:`, e)
+  }
+
+  return files
+}
+
 export async function readDocsFromFolders(
   accessToken: string,
   refreshToken: string,
@@ -108,43 +149,35 @@ export async function readDocsFromFolders(
   const docs: DriveDoc[] = []
 
   for (const folderId of folderIds) {
-    let res
-    try {
-      res = await drive.files.list({
-        q: `'${folderId}' in parents and (mimeType='application/vnd.google-apps.document' or mimeType='text/plain') and trashed=false`,
-        fields: 'files(id, name, modifiedTime, mimeType)',
-        orderBy: 'modifiedTime desc',
-        pageSize: 20,
-        supportsAllDrives: true,
-        includeItemsFromAllDrives: true,
-      })
-      console.log(`[drive] folder ${folderId}: ${res.data.files?.length ?? 0} files found`)
-    } catch (e) {
-      console.error(`[drive] files.list failed for folder ${folderId}:`, e)
-      continue
-    }
+    const allFiles = await collectDocIds(drive, folderId)
+    console.log(`[drive] folder ${folderId}: ${allFiles.length} docs found (recursive)`)
 
-    for (const file of res.data.files || []) {
+    // Sort by most recently modified, cap at 20 docs total per folder
+    const toRead = allFiles
+      .sort((a, b) => new Date(b.modifiedTime).getTime() - new Date(a.modifiedTime).getTime())
+      .slice(0, 20)
+
+    for (const file of toRead) {
       try {
         let content = ''
 
         if (file.mimeType === 'application/vnd.google-apps.document') {
           const exported = await drive.files.export({
-            fileId: file.id!,
+            fileId: file.id,
             mimeType: 'text/plain',
             supportsAllDrives: true,
           })
           content = exported.data as string
         } else {
-          const raw = await drive.files.get({ fileId: file.id!, alt: 'media', supportsAllDrives: true })
+          const raw = await drive.files.get({ fileId: file.id, alt: 'media', supportsAllDrives: true })
           content = raw.data as string
         }
 
         if (content.trim()) {
           docs.push({
-            name: file.name!,
+            name: file.name,
             content: content.trim().slice(0, 8000),
-            modified: new Date(file.modifiedTime!).toLocaleDateString('en-US', {
+            modified: new Date(file.modifiedTime).toLocaleDateString('en-US', {
               month: 'long',
               day: 'numeric',
               year: 'numeric',
