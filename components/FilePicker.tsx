@@ -41,7 +41,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
       const currentSelected = selected
 
       const view = new google.picker.DocsView()
-        .setMimeTypes('application/vnd.google-apps.document,text/plain')
+        .setIncludeFolders(true)
         .setMode(google.picker.DocsViewMode.LIST)
 
       new google.picker.PickerBuilder()
