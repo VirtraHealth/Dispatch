@@ -52,6 +52,41 @@ export async function foldersHaveContent(
   return false
 }
 
+export async function readDocs(
+  accessToken: string,
+  refreshToken: string,
+  ids: string[]
+): Promise<DriveDoc[]> {
+  const drive = await getDriveClient(accessToken, refreshToken)
+  const fileIds: string[] = []
+  const folderIds: string[] = []
+
+  for (const id of ids) {
+    try {
+      const meta = await drive.files.get({
+        fileId: id,
+        fields: 'id,mimeType',
+        supportsAllDrives: true,
+      })
+      if (meta.data.mimeType === 'application/vnd.google-apps.folder') {
+        folderIds.push(id)
+      } else {
+        fileIds.push(id)
+      }
+    } catch {
+      // unknown — try as file
+      fileIds.push(id)
+    }
+  }
+
+  const [fileDocs, folderDocs] = await Promise.all([
+    fileIds.length ? readSelectedDocs(accessToken, refreshToken, fileIds) : Promise.resolve([]),
+    folderIds.length ? readDocsFromFolders(accessToken, refreshToken, folderIds) : Promise.resolve([]),
+  ])
+
+  return [...fileDocs, ...folderDocs]
+}
+
 export async function readSelectedDocs(
   accessToken: string,
   refreshToken: string,

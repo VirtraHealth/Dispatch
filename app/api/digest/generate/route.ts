@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase'
-import { readDocsFromFolders } from '@/lib/google-drive'
+import { readDocs } from '@/lib/google-drive'
 import { getJournalEntriesDoc } from '@/lib/journal'
 import { generateDigest } from '@/lib/claude'
 import { sendDigestEmail } from '@/lib/email'
@@ -60,7 +60,7 @@ export async function POST() {
   }
 
   try {
-    const docs = await readDocsFromFolders(
+    const docs = await readDocs(
       user.google_access_token,
       user.google_refresh_token,
       settings.folder_ids
