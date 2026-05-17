@@ -58,12 +58,13 @@ export default function BlogPostPage({ params }: Props) {
           <Link href="/" className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600">
             My Daily Journal
           </Link>
-          <Link
-            href="/"
-            className="text-sm bg-ink text-white px-4 py-2 rounded-lg font-sans font-semibold hover:bg-gray-800 transition-colors"
-          >
-            Try it free
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link href="/blog" className="text-sm text-gray-500 hover:text-gray-800 font-sans transition-colors">Blog</Link>
+            <Link href="/newsletter" className="text-sm text-gray-500 hover:text-gray-800 font-sans transition-colors">Newsletter</Link>
+            <Link href="/" className="text-sm bg-ink text-white px-4 py-2 rounded-lg font-sans font-semibold hover:bg-gray-800 transition-colors">
+              Try it free
+            </Link>
+          </div>
         </div>
       </nav>
 
