@@ -60,6 +60,25 @@ export async function POST() {
   }
 
   try {
+    // DEBUG: inspect raw folder contents before filtering
+    const { getDriveClient } = await import('@/lib/google-drive')
+    const drive = await getDriveClient(user.google_access_token, user.google_refresh_token)
+    const debugInfo: unknown[] = []
+    for (const folderId of settings.folder_ids) {
+      try {
+        const raw = await drive.files.list({
+          q: `'${folderId}' in parents and trashed=false`,
+          fields: 'files(id,name,mimeType)',
+          pageSize: 50,
+          supportsAllDrives: true,
+          includeItemsFromAllDrives: true,
+        })
+        debugInfo.push({ folderId, files: raw.data.files || [] })
+      } catch (e) {
+        debugInfo.push({ folderId, error: String(e) })
+      }
+    }
+
     const docs = await readDocsFromFolders(
       user.google_access_token,
       user.google_refresh_token,
@@ -70,7 +89,7 @@ export async function POST() {
     if (journalDoc) docs.unshift(journalDoc)
 
     if (!docs.length) {
-      return NextResponse.json({ error: 'No readable documents found in selected folders' }, { status: 400 })
+      return NextResponse.json({ error: 'No readable documents found in selected folders', debug: debugInfo }, { status: 400 })
     }
 
     // Check if this is the user's first digest
