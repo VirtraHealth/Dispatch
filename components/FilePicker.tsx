@@ -40,46 +40,19 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
 
       const currentSelected = selected
 
-      const folderView = new google.picker.DocsView(google.picker.ViewId.FOLDERS)
-        .setSelectFolderEnabled(true)
-        .setMode(google.picker.DocsViewMode.LIST)
-
-      const fileView = new google.picker.DocsView()
+      const view = new google.picker.DocsView()
         .setMimeTypes('application/vnd.google-apps.document,text/plain')
         .setMode(google.picker.DocsViewMode.LIST)
 
       new google.picker.PickerBuilder()
-        .addView(folderView)
-        .addView(fileView)
+        .addView(view)
         .setOAuthToken(accessToken)
-        .setTitle('Select a folder or individual Google Docs')
-        .setCallback(async (data: { action: string; docs?: Array<{ id: string; name: string; mimeType: string }> }) => {
+        .setTitle('Select Google Docs to include in your digest')
+        .setCallback((data: { action: string; docs?: Array<{ id: string; name: string }> }) => {
           if (data.action === google.picker.Action.PICKED && data.docs) {
-            const additions: DriveFolder[] = []
-            for (const doc of data.docs) {
-              if (doc.mimeType === 'application/vnd.google-apps.folder') {
-                // Enumerate folder contents client-side using the fresh picker token
-                try {
-                  const res = await fetch(
-                    `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(`'${doc.id}' in parents and (mimeType='application/vnd.google-apps.document' or mimeType='text/plain') and trashed=false`)}&fields=files(id,name)&pageSize=50&supportsAllDrives=true&includeItemsFromAllDrives=true`,
-                    { headers: { Authorization: `Bearer ${accessToken}` } }
-                  )
-                  const json = await res.json()
-                  const files: Array<{ id: string; name: string }> = json.files || []
-                  if (files.length > 0) {
-                    additions.push(...files.map(f => ({ id: f.id, name: f.name, parentId: doc.id })))
-                  } else {
-                    // Folder enumeration didn't work — fall back to storing folder itself
-                    additions.push({ id: doc.id, name: doc.name, parentId: null })
-                  }
-                } catch {
-                  additions.push({ id: doc.id, name: doc.name, parentId: null })
-                }
-              } else {
-                additions.push({ id: doc.id, name: doc.name, parentId: null })
-              }
-            }
-            const newItems = additions.filter(a => !currentSelected.some(s => s.id === a.id))
+            const newItems = data.docs
+              .filter(doc => !currentSelected.some(s => s.id === doc.id))
+              .map(doc => ({ id: doc.id, name: doc.name, parentId: null }))
             onChange([...currentSelected, ...newItems].slice(0, max))
           }
         })
@@ -155,7 +128,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
       {error && <p className="mt-2 text-sm text-red-500 font-sans">{error}</p>}
 
       <p className="mt-3 text-xs text-gray-400 font-sans">
-        Select a folder to include all docs inside it, or pick individual Google Docs. Claude reads them each morning.
+        Navigate into any folder and select your Google Docs. Claude reads them each morning.
       </p>
     </div>
   )
