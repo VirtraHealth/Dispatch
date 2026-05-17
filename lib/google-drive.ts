@@ -204,7 +204,6 @@ export async function readDocsFromFolders(
           const exported = await drive.files.export({
             fileId: file.id,
             mimeType: 'text/plain',
-            supportsAllDrives: true,
           })
           content = exported.data as string
         } else {
