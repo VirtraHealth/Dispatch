@@ -44,6 +44,8 @@ export async function foldersHaveContent(
       q: `'${folderId}' in parents and (mimeType='application/vnd.google-apps.document' or mimeType='text/plain') and trashed=false`,
       fields: 'files(id)',
       pageSize: 1,
+      supportsAllDrives: true,
+      includeItemsFromAllDrives: true,
     })
     if ((res.data.files || []).length > 0) return true
   }
@@ -106,12 +108,21 @@ export async function readDocsFromFolders(
   const docs: DriveDoc[] = []
 
   for (const folderId of folderIds) {
-    const res = await drive.files.list({
-      q: `'${folderId}' in parents and (mimeType='application/vnd.google-apps.document' or mimeType='text/plain') and trashed=false`,
-      fields: 'files(id, name, modifiedTime, mimeType)',
-      orderBy: 'modifiedTime desc',
-      pageSize: 20,
-    })
+    let res
+    try {
+      res = await drive.files.list({
+        q: `'${folderId}' in parents and (mimeType='application/vnd.google-apps.document' or mimeType='text/plain') and trashed=false`,
+        fields: 'files(id, name, modifiedTime, mimeType)',
+        orderBy: 'modifiedTime desc',
+        pageSize: 20,
+        supportsAllDrives: true,
+        includeItemsFromAllDrives: true,
+      })
+      console.log(`[drive] folder ${folderId}: ${res.data.files?.length ?? 0} files found`)
+    } catch (e) {
+      console.error(`[drive] files.list failed for folder ${folderId}:`, e)
+      continue
+    }
 
     for (const file of res.data.files || []) {
       try {
@@ -121,17 +132,18 @@ export async function readDocsFromFolders(
           const exported = await drive.files.export({
             fileId: file.id!,
             mimeType: 'text/plain',
+            supportsAllDrives: true,
           })
           content = exported.data as string
         } else {
-          const raw = await drive.files.get({ fileId: file.id!, alt: 'media' })
+          const raw = await drive.files.get({ fileId: file.id!, alt: 'media', supportsAllDrives: true })
           content = raw.data as string
         }
 
         if (content.trim()) {
           docs.push({
             name: file.name!,
-            content: content.trim().slice(0, 8000), // cap per-doc to avoid token blowout
+            content: content.trim().slice(0, 8000),
             modified: new Date(file.modifiedTime!).toLocaleDateString('en-US', {
               month: 'long',
               day: 'numeric',
