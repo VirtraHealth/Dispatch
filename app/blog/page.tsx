@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { BLOG_POSTS } from '@/lib/blog-posts'
+import { getSubstackPosts, formatSubstackDate } from '@/lib/substack'
 
 export const metadata: Metadata = {
   title: 'Blog | My Daily Journal',
@@ -27,10 +28,13 @@ function formatDate(dateStr: string) {
   })
 }
 
-export default function BlogPage() {
-  const sorted = [...BLOG_POSTS].sort(
+export default async function BlogPage() {
+  const [substackPosts, sorted] = await Promise.all([
+    getSubstackPosts(3),
+    Promise.resolve([...BLOG_POSTS].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  )
+  )),
+  ])
 
   return (
     <div className="min-h-screen bg-cream">
@@ -85,10 +89,52 @@ export default function BlogPage() {
         </div>
       </div>
 
+      {/* Newsletter strip */}
+      {substackPosts.length > 0 && (
+        <div className="mt-16 border-t border-gray-100 pt-12">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <div className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600 mb-1">
+                Will's Newsletter
+              </div>
+              <p className="text-gray-400 font-sans text-sm">Latest from Substack</p>
+            </div>
+            <a
+              href="https://whoff.substack.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-indigo-600 font-sans font-semibold hover:text-indigo-700"
+            >
+              Subscribe →
+            </a>
+          </div>
+          <div className="space-y-0 divide-y divide-gray-100">
+            {substackPosts.map((post, i) => (
+              <a
+                key={i}
+                href={post.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block py-5 group"
+              >
+                <div className="text-xs text-gray-400 font-sans mb-1">{formatSubstackDate(post.pubDate)}</div>
+                <div className="font-serif text-lg text-ink group-hover:text-indigo-700 transition-colors">
+                  {post.title}
+                </div>
+                {post.description && (
+                  <p className="text-gray-500 font-sans text-sm mt-1 line-clamp-1">{post.description}</p>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       <footer className="border-t border-gray-100 mt-16">
         <div className="max-w-3xl mx-auto px-6 py-8 flex items-center justify-between">
           <span className="text-xs text-gray-400 font-sans">© 2025 My Daily Journal</span>
           <div className="flex gap-6">
+            <Link href="/newsletter" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Newsletter</Link>
             <Link href="/privacy" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Privacy</Link>
             <Link href="/terms" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Terms</Link>
           </div>

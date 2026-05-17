@@ -120,10 +120,33 @@ export default function BlogPostPage({ params }: Props) {
         </div>
       </article>
 
+      {/* Newsletter strip */}
+      <div className="max-w-2xl mx-auto px-6 pb-8">
+        <div className="border border-gray-100 rounded-2xl p-6 flex items-center justify-between gap-6">
+          <div>
+            <div className="font-sans text-xs font-bold tracking-widest uppercase text-indigo-600 mb-1">
+              Will's Newsletter
+            </div>
+            <p className="text-gray-500 font-sans text-sm leading-snug">
+              Writing on journaling, AI, and thinking clearly — published on Substack.
+            </p>
+          </div>
+          <a
+            href="https://whoff.substack.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 inline-block bg-ink text-white px-4 py-2 rounded-lg text-sm font-semibold font-sans hover:bg-gray-800 transition-colors"
+          >
+            Read →
+          </a>
+        </div>
+      </div>
+
       <footer className="border-t border-gray-100 mt-8">
         <div className="max-w-2xl mx-auto px-6 py-8 flex items-center justify-between">
           <span className="text-xs text-gray-400 font-sans">© 2025 My Daily Journal</span>
           <div className="flex gap-6">
+            <Link href="/newsletter" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Newsletter</Link>
             <Link href="/privacy" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Privacy</Link>
             <Link href="/terms" className="text-xs text-gray-400 hover:text-gray-600 font-sans">Terms</Link>
           </div>
