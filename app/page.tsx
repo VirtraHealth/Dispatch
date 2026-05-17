@@ -55,6 +55,9 @@ export default function LandingPage() {
           <Link href="/blog" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
             Blog
           </Link>
+          <Link href="/newsletter" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
+            Newsletter
+          </Link>
           <Link href="/about" className="text-sm font-sans text-gray-500 hover:text-gray-700 transition-colors">
             About
           </Link>
