@@ -100,6 +100,7 @@ export async function readSelectedDocs(
       const meta = await drive.files.get({
         fileId,
         fields: 'id,name,modifiedTime,mimeType',
+        supportsAllDrives: true,
       })
       const file = meta.data
       let content = ''
@@ -109,11 +110,13 @@ export async function readSelectedDocs(
           fileId: file.id!,
           mimeType: 'text/plain',
         })
-        content = exported.data as string
+        content = typeof exported.data === 'string' ? exported.data : JSON.stringify(exported.data)
       } else {
-        const raw = await drive.files.get({ fileId: file.id!, alt: 'media' })
-        content = raw.data as string
+        const raw = await drive.files.get({ fileId: file.id!, alt: 'media', supportsAllDrives: true })
+        content = typeof raw.data === 'string' ? raw.data : JSON.stringify(raw.data)
       }
+
+      console.log(`[readSelectedDocs] ${file.name}: ${content.trim().length} chars`)
 
       if (content.trim()) {
         docs.push({
@@ -126,8 +129,8 @@ export async function readSelectedDocs(
           }),
         })
       }
-    } catch (e) {
-      console.error(`Could not read file ${fileId}:`, e)
+    } catch (e: unknown) {
+      console.error(`[readSelectedDocs] failed for ${fileId}:`, e)
     }
   }
 
