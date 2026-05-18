@@ -40,14 +40,14 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
 
       const currentSelected = selected
 
-      const view = new google.picker.DocsView()
-        .setIncludeFolders(false)
+      const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS)
+        .setSelectFolderEnabled(true)
         .setMode(google.picker.DocsViewMode.LIST)
 
       new google.picker.PickerBuilder()
         .addView(view)
         .setOAuthToken(accessToken)
-        .setTitle('Select Google Docs to read each morning')
+        .setTitle('Select a Google Drive folder')
         .setCallback((data: { action: string; docs?: Array<{ id: string; name: string }> }) => {
           if (data.action === google.picker.Action.PICKED && data.docs) {
             const newItems = data.docs
@@ -119,7 +119,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              {selected.length === 0 ? 'Choose files from Google Drive' : 'Add another file'}
+              {selected.length === 0 ? 'Choose a folder from Google Drive' : 'Add another folder'}
             </>
           )}
         </button>
@@ -128,7 +128,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
       {error && <p className="mt-2 text-sm text-red-500 font-sans">{error}</p>}
 
       <p className="mt-3 text-xs text-gray-400 font-sans">
-        Select the Google Docs you want Claude to read each morning. Add new ones any time.
+        Select a Google Drive folder. Claude reads every doc inside it each morning — just keep adding files to the folder.
       </p>
     </div>
   )
