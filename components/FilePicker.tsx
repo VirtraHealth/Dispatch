@@ -137,19 +137,19 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
         <button
           onClick={openPicker}
           disabled={loading}
-          className="flex items-center justify-center gap-2 w-full border border-dashed border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-500 hover:border-indigo-400 hover:text-indigo-600 font-sans transition-colors disabled:opacity-50"
+          className="flex items-center justify-center gap-2 w-full border border-dashed border-gray-300 rounded-lg px-4 py-3.5 text-sm text-gray-500 hover:border-indigo-400 hover:text-indigo-600 font-sans transition-colors disabled:opacity-50"
         >
           {loading ? (
             <>
               <div className="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin" />
-              Opening…
+              Opening Google Drive…
             </>
           ) : (
             <>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              {selected.length === 0 ? 'Add a folder or document' : 'Add another'}
+              {selected.length === 0 ? 'Choose from Google Drive' : 'Add another'}
             </>
           )}
         </button>
@@ -157,9 +157,11 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
 
       {error && <p className="mt-2 text-sm text-red-500 font-sans">{error}</p>}
 
-      <p className="mt-3 text-xs text-gray-400 font-sans">
-        Add folders (Claude reads every doc inside) or individual Google Docs. Mix and match.
-      </p>
+      <div className="mt-3 flex items-start gap-2">
+        <p className="text-xs text-gray-400 font-sans leading-relaxed">
+          Pick a <span className="font-medium text-gray-500">folder</span> (Claude reads every doc inside, great for projects) or an <span className="font-medium text-gray-500">individual doc</span>. You can mix both.
+        </p>
+      </div>
     </div>
   )
 }
