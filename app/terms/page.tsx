@@ -32,7 +32,7 @@ export default function TermsPage() {
             Legal
           </div>
           <h1 className="font-serif text-4xl text-ink mb-3">Terms of Service</h1>
-          <p className="text-sm text-gray-400 font-sans">Effective date: May 11, 2026</p>
+          <p className="text-sm text-gray-400 font-sans">Effective date: May 19, 2026</p>
         </div>
 
         <div className="font-serif text-base text-ink leading-[1.85] space-y-8">
@@ -58,11 +58,12 @@ export default function TermsPage() {
             </h2>
             <p>
               My Daily Journal is a daily AI email digest service. It reads documents from the Google
-              Drive folders you select, synthesises them using an AI model (Claude by Anthropic),
-              and sends a formatted digest to your email address on a schedule you configure.
-              The Service requires a Google account and grants My Daily Journal read-only access to your
-              selected Drive folders and the ability to send email via your Gmail account solely
-              for digest delivery.
+              Drive folders and individual files you select, synthesises them alongside any journal
+              entries you write in the dashboard, using an AI model (Claude by Anthropic), and
+              sends a formatted digest to your email address each morning. The Service requires a
+              Google account and grants My Daily Journal read-only access to your selected Drive folders
+              and documents. Digest emails are delivered via Resend, a third-party transactional
+              email provider.
             </p>
           </section>
 
@@ -83,10 +84,10 @@ export default function TermsPage() {
             </h2>
             <ul className="list-disc list-outside ml-5 space-y-2">
               <li>
-                You are responsible for the content of the documents you make available to
-                My Daily Journal. Do not point My Daily Journal at folders containing sensitive personal data
-                belonging to others, confidential business information you are not authorised to
-                share, or any content that is illegal or violates third-party rights.
+                You are responsible for the content of the documents and journal entries you make
+                available to My Daily Journal. Do not connect folders or files containing sensitive
+                personal data belonging to others, confidential business information you are not
+                authorised to share, or any content that is illegal or violates third-party rights.
               </li>
               <li>
                 You agree not to use the Service to circumvent, disable, or interfere with
@@ -94,9 +95,8 @@ export default function TermsPage() {
                 Service or its infrastructure.
               </li>
               <li>
-                You agree not to misuse the Gmail send permission. My Daily Journal uses it exclusively
-                to deliver your digests. You must not attempt to trigger sending to addresses
-                other than your own delivery email.
+                Your delivery email address is used solely to send your digest. You must not
+                attempt to trigger digest delivery to addresses that are not your own.
               </li>
               <li>
                 You are responsible for maintaining the security of your Google account and for
@@ -165,7 +165,7 @@ export default function TermsPage() {
               9. Limitation of liability
             </h2>
             <p>
-              TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, DISPATCH SHALL NOT BE
+              TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, MY DAILY JOURNAL SHALL NOT BE
               LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES,
               OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR
               ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR

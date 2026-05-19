@@ -32,7 +32,7 @@ export default function PrivacyPage() {
             Legal
           </div>
           <h1 className="font-serif text-4xl text-ink mb-3">Privacy Policy</h1>
-          <p className="text-sm text-gray-400 font-sans">Effective date: May 11, 2026</p>
+          <p className="text-sm text-gray-400 font-sans">Effective date: May 19, 2026</p>
         </div>
 
         <div className="font-serif text-base text-ink leading-[1.85] space-y-8">
@@ -68,9 +68,13 @@ export default function PrivacyPage() {
                 visits.
               </li>
               <li>
-                <strong>Folder selections and delivery preferences.</strong> Which Drive folders
-                you want My Daily Journal to read, what time you want your digest delivered, your timezone,
-                and any personal instructions you give Claude.
+                <strong>Drive selections and delivery preferences.</strong> Which Google Drive folders
+                and individual documents you want My Daily Journal to read, what time you want your digest
+                delivered, your timezone, and any personal instructions you give Claude.
+              </li>
+              <li>
+                <strong>Journal entries.</strong> Notes you write directly in the My Daily Journal dashboard
+                are stored in our database and included in your digest alongside your Drive documents.
               </li>
               <li>
                 <strong>Digest history.</strong> The rendered HTML of each digest we send you is
@@ -85,15 +89,20 @@ export default function PrivacyPage() {
             </h2>
             <p className="mb-3">
               When generating your digest, our server temporarily reads the text content of
-              documents inside the folders you selected. This reading happens in memory, on our
-              server, at digest-generation time. <strong>We never permanently store the raw
-              contents of your Google Drive documents.</strong> The document text is passed
-              directly to Claude (Anthropic&rsquo;s API) to produce the digest, and then discarded.
-              Only the finished digest HTML is saved.
+              the Google Drive folders and individual documents you have selected. This reading
+              happens in memory, on our server, at digest-generation time. <strong>We never
+              permanently store the raw contents of your Google Drive documents.</strong> The
+              document text is passed directly to Claude (Anthropic&rsquo;s API) to produce the
+              digest, and then discarded. Only the finished digest HTML is saved.
+            </p>
+            <p className="mb-3">
+              For folders, we recursively read documents up to three levels deep, prioritising
+              the most recently modified files. For individual documents, we read only the
+              specific file you selected.
             </p>
             <p>
-              We request <strong>read-only</strong> Drive access. My Daily Journal cannot create, edit,
-              move, or delete any of your files.
+              We request <strong>read-only</strong> Drive access (<code className="font-sans text-sm bg-indigo-50 px-1.5 py-0.5 rounded">drive.readonly</code>).
+              My Daily Journal cannot create, edit, move, or delete any of your files.
             </p>
           </section>
 
@@ -135,7 +144,8 @@ export default function PrivacyPage() {
             </h2>
             <ul className="list-disc list-outside ml-5 space-y-2">
               <li>To authenticate you and maintain your session.</li>
-              <li>To read your selected Drive folders and generate your daily digest.</li>
+              <li>To read your selected Drive folders and documents and generate your daily digest.</li>
+              <li>To store and include journal entries you write in the dashboard.</li>
               <li>To send the digest to your delivery email address.</li>
               <li>To display your digest history in your dashboard.</li>
               <li>To improve the service (aggregate, anonymised usage metrics only).</li>
