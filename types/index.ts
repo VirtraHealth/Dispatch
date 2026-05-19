@@ -39,6 +39,7 @@ export interface DriveFolder {
   id: string
   name: string
   parentId?: string | null
+  type?: 'folder' | 'file'
 }
 
 export interface DriveDoc {

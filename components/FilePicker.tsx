@@ -14,6 +14,26 @@ interface FilePickerProps {
   max?: number
 }
 
+function isFolder(item: DriveFolder) {
+  return item.type === 'folder' || item.type === undefined
+}
+
+function FolderIcon() {
+  return (
+    <svg className="w-4 h-4 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
+    </svg>
+  )
+}
+
+function DocIcon() {
+  return (
+    <svg className="w-4 h-4 text-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  )
+}
+
 export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -40,19 +60,28 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
 
       const currentSelected = selected
 
-      const view = new google.picker.DocsView(google.picker.ViewId.FOLDERS)
+      const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS)
+        .setMode(google.picker.DocsViewMode.LIST)
+
+      const foldersView = new google.picker.DocsView(google.picker.ViewId.FOLDERS)
         .setSelectFolderEnabled(true)
         .setMode(google.picker.DocsViewMode.LIST)
 
       new google.picker.PickerBuilder()
-        .addView(view)
+        .addView(docsView)
+        .addView(foldersView)
         .setOAuthToken(accessToken)
-        .setTitle('Select a Google Drive folder')
-        .setCallback((data: { action: string; docs?: Array<{ id: string; name: string }> }) => {
+        .setTitle('Select documents or folders')
+        .setCallback((data: { action: string; docs?: Array<{ id: string; name: string; mimeType: string }> }) => {
           if (data.action === google.picker.Action.PICKED && data.docs) {
             const newItems = data.docs
               .filter(doc => !currentSelected.some(s => s.id === doc.id))
-              .map(doc => ({ id: doc.id, name: doc.name, parentId: null }))
+              .map(doc => ({
+                id: doc.id,
+                name: doc.name,
+                parentId: null,
+                type: doc.mimeType === 'application/vnd.google-apps.folder' ? 'folder' as const : 'file' as const,
+              }))
             onChange([...currentSelected, ...newItems].slice(0, max))
           }
         })
@@ -74,14 +103,15 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
     <div>
       {selected.length > 0 && (
         <div className="space-y-2 mb-4">
-          {selected.map(file => (
-            <div key={file.id} className="flex items-center gap-3 px-4 py-3 bg-white rounded-lg border border-gray-200">
-              <svg className="w-4 h-4 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z" />
-              </svg>
-              <span className="text-sm text-gray-700 font-sans flex-1 truncate">{file.name}</span>
+          {selected.map(item => (
+            <div key={item.id} className="flex items-center gap-3 px-4 py-3 bg-white rounded-lg border border-gray-200">
+              {isFolder(item) ? <FolderIcon /> : <DocIcon />}
+              <div className="flex-1 min-w-0">
+                <span className="text-sm text-gray-700 font-sans truncate block">{item.name}</span>
+                <span className="text-xs text-gray-400 font-sans">{isFolder(item) ? 'Folder — Claude reads all docs inside' : 'Document'}</span>
+              </div>
               <a
-                href={`https://drive.google.com/open?id=${file.id}`}
+                href={`https://drive.google.com/open?id=${item.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-gray-400 hover:text-indigo-500 font-sans flex-shrink-0 transition-colors"
@@ -90,7 +120,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
                 Open ↗
               </a>
               <button
-                onClick={() => remove(file.id)}
+                onClick={() => remove(item.id)}
                 className="text-gray-300 hover:text-red-400 transition-colors flex-shrink-0"
                 aria-label="Remove"
               >
@@ -119,7 +149,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              {selected.length === 0 ? 'Choose a folder from Google Drive' : 'Add another folder'}
+              {selected.length === 0 ? 'Add a folder or document' : 'Add another'}
             </>
           )}
         </button>
@@ -128,7 +158,7 @@ export function FilePicker({ selected, onChange, max = 10 }: FilePickerProps) {
       {error && <p className="mt-2 text-sm text-red-500 font-sans">{error}</p>}
 
       <p className="mt-3 text-xs text-gray-400 font-sans">
-        Select a Google Drive folder. Claude reads every doc inside it each morning — just keep adding files to the folder.
+        Add folders (Claude reads every doc inside) or individual Google Docs. Mix and match.
       </p>
     </div>
   )

@@ -36,6 +36,10 @@ export default function DashboardPage() {
   const [contextDraft, setContextDraft] = useState('')
   const [contextSaving, setContextSaving] = useState(false)
 
+  // Expand toggles
+  const [showAllEntries, setShowAllEntries] = useState(false)
+  const [showAllDigests, setShowAllDigests] = useState(false)
+
   // Feature request
   const [featureText, setFeatureText] = useState('')
   const [featureSending, setFeatureSending] = useState(false)
@@ -345,16 +349,21 @@ export default function DashboardPage() {
           {/* Recent entries */}
           {journalEntries.length > 0 && (
             <div className="mt-3 space-y-2">
-              {journalEntries.slice(0, 5).map(entry => (
+              {(showAllEntries ? journalEntries : journalEntries.slice(0, 3)).map(entry => (
                 <div key={entry.id} className="bg-white/60 rounded-lg border border-gray-50 px-4 py-3">
                   <div className="text-xs text-gray-400 font-sans mb-1">{formatEntryDate(entry.created_at)}</div>
                   <p className="text-sm text-gray-600 font-sans leading-relaxed line-clamp-2">{entry.content}</p>
                 </div>
               ))}
-              {journalEntries.length > 5 && (
-                <p className="text-xs text-gray-400 font-sans text-center pt-1">
-                  {journalEntries.length - 5} older {journalEntries.length - 5 === 1 ? 'entry' : 'entries'} not shown
-                </p>
+              {journalEntries.length > 3 && (
+                <button
+                  onClick={() => setShowAllEntries(v => !v)}
+                  className="w-full text-xs text-gray-400 hover:text-indigo-600 font-sans text-center pt-1 pb-0.5 transition-colors"
+                >
+                  {showAllEntries
+                    ? 'Show less'
+                    : `Show ${journalEntries.length - 3} more ${journalEntries.length - 3 === 1 ? 'entry' : 'entries'}`}
+                </button>
               )}
             </div>
           )}
@@ -406,7 +415,17 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="space-y-3">
-              {digests.map(d => <DigestCard key={d.id} digest={d} />)}
+              {(showAllDigests ? digests : digests.slice(0, 5)).map(d => <DigestCard key={d.id} digest={d} />)}
+              {digests.length > 5 && (
+                <button
+                  onClick={() => setShowAllDigests(v => !v)}
+                  className="w-full text-xs text-gray-400 hover:text-indigo-600 font-sans text-center py-2 border border-gray-100 rounded-xl bg-white hover:border-indigo-200 transition-colors"
+                >
+                  {showAllDigests
+                    ? 'Show less'
+                    : `Show ${digests.length - 5} more digest${digests.length - 5 === 1 ? '' : 's'}`}
+                </button>
+              )}
             </div>
           )}
         </section>
