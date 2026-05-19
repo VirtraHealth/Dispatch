@@ -16,7 +16,6 @@ export async function getUsersDueForDigest() {
       )
     `)
     .eq('is_active', true)
-    .not('folder_ids', 'eq', '{}')
 
   if (error || !settings) return []
 
