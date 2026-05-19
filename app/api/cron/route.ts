@@ -43,13 +43,21 @@ export async function GET(req: NextRequest) {
 
         if (!docs.length) {
           console.log(`[cron] No docs found for ${user.email}`)
-          // Send a one-time nudge email if the user has never had a digest or nudge
-          const { count: priorCount } = await supabaseAdmin
+          // Send a daily nudge until the user connects docs.
+          // Dedup: skip if a nudge was already sent in the last 20 hours.
+          const { data: priorNudges } = await supabaseAdmin
             .from('digests')
-            .select('id', { count: 'exact', head: true })
+            .select('sent_at')
             .eq('user_id', setting.user_id)
-          if ((priorCount ?? 0) === 0) {
-            await sendContextNudgeEmail({ to: setting.delivery_email })
+            .eq('source', 'nudge')
+            .order('sent_at', { ascending: false })
+
+          const twentyHoursAgo = new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString()
+          const alreadySentToday = priorNudges?.[0] && priorNudges[0].sent_at >= twentyHoursAgo
+
+          if (!alreadySentToday) {
+            const nudgeNumber = (priorNudges?.length ?? 0) + 1
+            await sendContextNudgeEmail({ to: setting.delivery_email, nudgeNumber })
             await supabaseAdmin.from('digests').insert({
               user_id: setting.user_id,
               subject: 'nudge_sent',
@@ -59,7 +67,7 @@ export async function GET(req: NextRequest) {
               status: 'nudge',
               source: 'nudge',
             })
-            console.log(`[cron] Context nudge sent to ${user.email}`)
+            console.log(`[cron] Context nudge #${nudgeNumber} sent to ${user.email}`)
           }
           return
         }

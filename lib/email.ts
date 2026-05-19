@@ -29,8 +29,30 @@ export async function sendDigestEmail({
   })
 }
 
-export async function sendContextNudgeEmail({ to }: { to: string }) {
+export async function sendContextNudgeEmail({ to, nudgeNumber = 1 }: { to: string; nudgeNumber?: number }) {
   const dashboardUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`
+  const settingsUrl = `${process.env.NEXT_PUBLIC_APP_URL}/settings`
+
+  const isFirst = nudgeNumber === 1
+
+  const subject = isFirst
+    ? 'Your My Daily Journal digest is almost ready'
+    : 'Your morning digest is waiting on your notes'
+
+  const headline = isFirst
+    ? 'Your digest is almost ready.'
+    : 'Still waiting on your notes.'
+
+  const body1 = isFirst
+    ? `We couldn&apos;t find any writing in your connected folders yet — so we&apos;re holding your digest until there&apos;s something to read.`
+    : `We check your connected folders every morning at 8 AM, but haven&apos;t found any notes to read yet — so your digest hasn&apos;t gone out.`
+
+  const body2 = isFirst
+    ? `Connect a Google Drive folder or add an individual doc — even a few rough lines is enough for Claude to work with.`
+    : `Once you add a doc or folder with some writing in it, your digest will start arriving every morning automatically.`
+
+  const ctaText = isFirst ? 'Connect my notes →' : 'Add notes and start my digest →'
+
   const html = `<!DOCTYPE html>
 <html>
 <head>
@@ -44,21 +66,17 @@ export async function sendContextNudgeEmail({ to }: { to: string }) {
       <div style="font-family:-apple-system,sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#4a3f8f;margin-bottom:8px">My Daily Journal</div>
     </div>
 
-    <p style="font-size:20px;font-weight:normal;color:#1a1a2e;margin:0 0 16px">Your first digest is almost ready.</p>
-    <p style="font-family:-apple-system,sans-serif;font-size:15px;color:#555;line-height:1.7;margin:0 0 24px">
-      We couldn&apos;t find any writing in your connected folders yet — so we held off on sending your digest until there&apos;s something to read.
-    </p>
-    <p style="font-family:-apple-system,sans-serif;font-size:15px;color:#555;line-height:1.7;margin:0 0 32px">
-      In the meantime, adding a short note about what you&apos;re working on and thinking about lets My Daily Journal write something personal for you right now — even before your first notes are in.
-    </p>
+    <p style="font-size:20px;font-weight:normal;color:#1a1a2e;margin:0 0 16px">${headline}</p>
+    <p style="font-family:-apple-system,sans-serif;font-size:15px;color:#555;line-height:1.7;margin:0 0 20px">${body1}</p>
+    <p style="font-family:-apple-system,sans-serif;font-size:15px;color:#555;line-height:1.7;margin:0 0 32px">${body2}</p>
 
-    <a href="${dashboardUrl}" style="display:inline-block;background:#4a3f8f;color:#fff;font-family:-apple-system,sans-serif;font-size:14px;font-weight:600;text-decoration:none;padding:14px 28px;border-radius:10px">
-      Add context &amp; get my first digest →
+    <a href="${settingsUrl}" style="display:inline-block;background:#4a3f8f;color:#fff;font-family:-apple-system,sans-serif;font-size:14px;font-weight:600;text-decoration:none;padding:14px 28px;border-radius:10px">
+      ${ctaText}
     </a>
 
     <div style="border-top:1px solid #e0ddd4;padding-top:24px;margin-top:48px;font-family:-apple-system,sans-serif;font-size:12px;color:#bbb;text-align:center;line-height:1.6">
       My Daily Journal · Your thinking, amplified<br>
-      <a href="${process.env.NEXT_PUBLIC_APP_URL}/settings" style="color:#bbb">Manage settings</a>
+      <a href="${settingsUrl}" style="color:#bbb">Manage settings</a>
     </div>
 
   </div>
@@ -68,7 +86,7 @@ export async function sendContextNudgeEmail({ to }: { to: string }) {
   await resend.emails.send({
     from: 'My Daily Journal <digest@mydailyjournal.net>',
     to,
-    subject: 'Your first My Daily Journal digest is almost ready',
+    subject,
     html,
   })
 }
