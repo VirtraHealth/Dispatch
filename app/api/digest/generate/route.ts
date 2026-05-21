@@ -63,7 +63,8 @@ export async function POST() {
     const docs = await readDocs(
       user.google_access_token,
       user.google_refresh_token,
-      settings.folder_ids
+      settings.folder_ids,
+      session.user.email
     )
 
     const journalDoc = await getJournalEntriesDoc(user.id)
