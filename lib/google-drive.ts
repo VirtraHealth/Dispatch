@@ -1,15 +1,36 @@
 import { google } from 'googleapis'
+import { supabaseAdmin } from './supabase'
 import type { DriveDoc, DriveFolder } from '@/types'
 
-export async function getDriveClient(accessToken: string, refreshToken: string) {
+export async function getDriveClient(
+  accessToken: string,
+  refreshToken: string,
+  userEmail?: string
+) {
   const auth = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET
   )
+  // Set expiry_date to 0 so the library always proactively refreshes the
+  // access token on the first call rather than waiting for a 401.
   auth.setCredentials({
     access_token: accessToken,
     refresh_token: refreshToken,
+    expiry_date: 0,
   })
+
+  // Persist refreshed tokens back to DB so the cron always has valid creds.
+  if (userEmail) {
+    auth.on('tokens', async (tokens) => {
+      const update: Record<string, string> = {}
+      if (tokens.access_token) update.google_access_token = tokens.access_token
+      if (tokens.refresh_token) update.google_refresh_token = tokens.refresh_token
+      if (Object.keys(update).length) {
+        await supabaseAdmin.from('users').update(update).eq('email', userEmail)
+      }
+    })
+  }
+
   return google.drive({ version: 'v3', auth })
 }
 
@@ -55,9 +76,10 @@ export async function foldersHaveContent(
 export async function readDocs(
   accessToken: string,
   refreshToken: string,
-  ids: string[]
+  ids: string[],
+  userEmail?: string
 ): Promise<DriveDoc[]> {
-  const drive = await getDriveClient(accessToken, refreshToken)
+  const drive = await getDriveClient(accessToken, refreshToken, userEmail)
   const fileIds: string[] = []
   const folderIds: string[] = []
 
@@ -73,8 +95,12 @@ export async function readDocs(
       } else {
         fileIds.push(id)
       }
-    } catch {
-      // unknown — try as file
+    } catch (e: unknown) {
+      const status = (e as { code?: number })?.code
+      // Re-throw auth errors so they surface as failures rather than silently
+      // falling through to the nudge path with an empty doc list.
+      if (status === 401 || status === 403) throw e
+      // Unknown type — try reading as a plain file
       fileIds.push(id)
     }
   }

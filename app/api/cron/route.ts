@@ -35,7 +35,8 @@ export async function GET(req: NextRequest) {
         const docs = await readDocs(
           user.google_access_token,
           user.google_refresh_token,
-          setting.folder_ids
+          setting.folder_ids,
+          user.email
         )
 
         const journalDoc = await getJournalEntriesDoc(setting.user_id)

@@ -101,10 +101,12 @@ async function refreshAccessToken(token: Record<string, unknown>) {
       refreshToken: refreshed.refresh_token ?? token.refreshToken,
     }
 
-    // Persist refreshed token to DB
+    // Persist refreshed tokens to DB — include refresh_token if Google rotated it
+    const dbUpdate: Record<string, string> = { google_access_token: refreshed.access_token }
+    if (refreshed.refresh_token) dbUpdate.google_refresh_token = refreshed.refresh_token
     await supabaseAdmin
       .from('users')
-      .update({ google_access_token: refreshed.access_token })
+      .update(dbUpdate)
       .eq('email', token.email as string)
 
     return newToken
