@@ -220,10 +220,34 @@ export async function readDocsFromFolders(
     const allFiles = await collectDocIds(drive, folderId)
     console.log(`[drive] folder ${folderId}: ${allFiles.length} docs found (recursive)`)
 
-    // Sort by most recently modified, cap at 20 docs total per folder
-    const toRead = allFiles
-      .sort((a, b) => new Date(b.modifiedTime).getTime() - new Date(a.modifiedTime).getTime())
-      .slice(0, 20)
+    // Sort by recency, then weighted-sample up to 20 docs.
+    // Newest doc gets weight 1.1, oldest gets 1.0 — a 10% recency boost.
+    const sorted = allFiles.sort(
+      (a, b) => new Date(b.modifiedTime).getTime() - new Date(a.modifiedTime).getTime()
+    )
+    let toRead: typeof sorted
+    if (sorted.length <= 20) {
+      toRead = sorted
+    } else {
+      const pool = sorted.map((file, i) => ({
+        file,
+        weight: 1.0 + 0.1 * (1 - i / (sorted.length - 1)),
+      }))
+      const selected: Array<{ file: (typeof sorted)[number]; weight: number }> = []
+      const remaining = [...pool]
+      while (selected.length < 20 && remaining.length > 0) {
+        const total = remaining.reduce((s, item) => s + item.weight, 0)
+        let r = Math.random() * total
+        let idx = remaining.length - 1
+        for (let j = 0; j < remaining.length; j++) {
+          r -= remaining[j].weight
+          if (r <= 0) { idx = j; break }
+        }
+        selected.push(remaining[idx])
+        remaining.splice(idx, 1)
+      }
+      toRead = selected.map(s => s.file)
+    }
 
     for (const file of toRead) {
       try {
