@@ -347,8 +347,6 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
-]
-
   {
     slug: 'best-ai-journaling-apps-2026',
     title: 'The Best AI Journaling Apps in 2026 — and Why Most of Them Miss the Point',
